@@ -7,8 +7,9 @@ router.post("/googleLogin", function (req, res) {
   var user_id = req.body.user_id;
   var name = req.body.name;
   var nickname = req.body.nickname;
+  var sns_type = "google";
 
-  var sql = "INSERT INTO user (user_id, user_name, nickname) VALUES (?, ?, ?)";
+  var sql = "INSERT INTO user (user_id, user_name, nickname, sns_type) VALUES (?, ?, ?, ?)";
 
   db.query(
     "SELECT * FROM user WHERE user_id = ?",
@@ -19,7 +20,7 @@ router.post("/googleLogin", function (req, res) {
       console.log(result);
 
       if (result == null) {
-        db.query(sql, [user_id, name, nickname], function (error, output) {
+        db.query(sql, [user_id, name, nickname, sns_type], function (error, output) {
           if (error) {
             console.error(error);
           } else {
