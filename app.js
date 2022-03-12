@@ -3,6 +3,7 @@ const app = express();
 var bodyParser = require("body-parser");
 const loginRouter = require("./routes/login.js");
 const signupRouter = require("./routes/signup.js");
+const googleLoginRouter = require("./routes/googleLogin.js");
 
 const kakaoLoginRouter = require("./routes/kakaoLogin.js");
 
@@ -14,7 +15,11 @@ app.get("/", async (req, res) => {
 });
 app.post("/login", loginRouter);
 app.post("/signup", signupRouter);
+<<<<<<< HEAD
 app.post("/kakaoLogin",kakaoLoginRouter);
+=======
+app.post("/googleLogin", googleLoginRouter);
+>>>>>>> 2435ccf06ef2eebda8bc26590fc13f573de37a71
 
 app.listen(3000, function () {
   console.log("server is running.");
