@@ -15,11 +15,8 @@ app.get("/", async (req, res) => {
 });
 app.post("/login", loginRouter);
 app.post("/signup", signupRouter);
-<<<<<<< HEAD
-app.post("/kakaoLogin",kakaoLoginRouter);
-=======
+app.post("/kakaoLogin", kakaoLoginRouter);
 app.post("/googleLogin", googleLoginRouter);
->>>>>>> 2435ccf06ef2eebda8bc26590fc13f573de37a71
 
 app.listen(3000, function () {
   console.log("server is running.");
