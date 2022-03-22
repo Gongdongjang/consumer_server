@@ -6,6 +6,8 @@ const signupRouter = require("./routes/signup.js");
 const googleLoginRouter = require("./routes/googleLogin.js");
 const agreePopupRouter = require("./routes/agreePopup.js");
 
+const kakaoLoginRouter = require("./routes/kakaoLogin.js");
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
@@ -14,6 +16,7 @@ app.get("/", async (req, res) => {
 });
 app.post("/login", loginRouter);
 app.post("/signup", signupRouter);
+app.post("/kakaoLogin", kakaoLoginRouter);
 app.post("/googleLogin", googleLoginRouter);
 app.post("/agreePopup", agreePopupRouter);
 
