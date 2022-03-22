@@ -24,7 +24,7 @@ router.post("/kakaoLogin", async (req, res, next) => {
       data = await pool.query(sql, param);
       //console.log("28행", data[0][0].user_name);
       resultCode = 200;
-      message = "카카오 계정 회원가입 성공! ";
+      message = "카카오 계정 회원가입 성공!";
     } else {
       //console.log("33행 여긴login_result"+data);
       resultCode = 200;
