@@ -26,9 +26,9 @@ router.get("/farmView", async (req, res, next) => {
     return res.json({
       code: resultCode,
       message: message,
-      farm_name: farm_name,
-      farm_info: farm_info,
-      farm_mainItem: farm_mainItem,
+      // farm_name: farm_name,
+      // farm_info: farm_info,
+      // farm_mainItem: farm_mainItem,
       count: count,
       farm: farm,
       // data: data,

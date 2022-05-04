@@ -8,29 +8,43 @@ router.get("/storeView", async (req, res, next) => {
 
   try {
     //문제 없으면 try문 실행
-    const data = await pool.query("SELECT * FROM store");
-    //가게 이름
-    const store_name = data[0][0].store_name;
-    //가게 특징
-    const store_info = data[0][0].store_info;
-
-    // const farm = data[0];
-    var count = await pool.query("SELECT COUNT(*) FROM store");
-    console.log("19행");
-    console.log(data[0]);
+    const data = await pool.query("SELECT md_id, store_id FROM pickup");
+    let st_arr = new Array();
+    let md_arr = new Array();
+    var count = await pool.query("SELECT COUNT(*) FROM pickup");
     count = count[0][0]["COUNT(*)"];
-    console.log(count);
-    store = data[0];
+    for (let i = 0; i < count; i++) {
+      let connection = await pool.getConnection(async (conn) => conn);
+      store_name = await pool.query(
+        "SELECT store_name FROM store where store_id = ?",
+        [data[0][i].store_id]
+      );
+      st_arr[i] = store_name[0][0].store_name;
+      connection.release();
+    }
+    // console.log(st_arr);
+    // let jsonSt_name = JSON.stringify(st_obj);
+    // console.log(jsonSt_name);
+
+    for (let i = 0; i < count; i++) {
+      let connection = await pool.getConnection(async (conn) => conn);
+      md_name = await pool.query("SELECT md_name FROM md where md_id = ?", [
+        data[0][i].md_id,
+      ]);
+      md_arr[i] = md_name[0][0].md_name;
+      connection.release();
+    }
+    // console.log(md_arr);
+
+    // store = data[0];
 
     return res.json({
       code: resultCode,
       message: message,
-      store_name: store_name,
-      store_info: store_info,
-      //   far_mainItem: farm_mainItem,
       count: count,
-      store: store,
-      // data: data,
+      // store: store,
+      md_obj: md_obj,
+      st_obj: st_obj,
     });
   } catch (err) {
     return res.status(500).json(err);
