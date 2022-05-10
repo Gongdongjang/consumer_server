@@ -6,32 +6,49 @@ router.get("/farmView", async (req, res, next) => {
   var resultCode = 404;
   var message = "에러가 발생했습니다.";
 
+  console.log("9행 farmView다!!!");
+
   try {
     //문제 없으면 try문 실행
-    const data = await pool.query("SELECT * FROM farm");
-    //농가 이름
-    const farm_name = data[0][0].farm_name;
-    //농가 특징
-    const farm_info = data[0][0].farm_info;
-    //농가에서 판매 중인 물품
-    const farm_mainItem = data[0][0].farm_mainItem;
-    // const farm = data[0];
-    var count = await pool.query("SELECT COUNT(*) FROM farm");
-    console.log("19행");
-    console.log(data[0]);
+
+    console.log("farmView다!!!");
+
+    let farm_arr = new Array();
+    let farm_mainItem = new Array();
+    let farm_info = new Array();
+    let farm_loc = new Array();
+
+    let count = await pool.query("SELECT COUNT(*) FROM farm");
     count = count[0][0]["COUNT(*)"];
-    console.log(count);
-    farm = data[0];
+    console.log("farm의 count개수: "+ count);
+
+    for (let i=0; i< count; i++) { //재할당이니까 const가 아닌 let이다..!!
+      console.log(i);
+      let data = await pool.query("SELECT farm_name, farm_info, farm_mainItem, farm_loc FROM farm");
+  
+      //console.log("data[0][i] 번째");
+
+      farm_arr[i]=data[0][i].farm_name;
+      farm_mainItem[i]=data[0][i].farm_mainItem;
+      farm_info[i]=data[0][i].farm_info;
+      farm_loc[i]=data[0][i].farm_loc;
+
+    }
+    console.log("63행");
+    console.log(farm_arr);
+    console.log(farm_mainItem);
+    console.log(farm_info);
+    console.log(farm_loc);
+
 
     return res.json({
       code: resultCode,
       message: message,
-      // farm_name: farm_name,
-      // farm_info: farm_info,
-      // farm_mainItem: farm_mainItem,
       count: count,
-      farm: farm,
-      // data: data,
+      farm_arr: farm_arr,
+      farm_mainItem: farm_mainItem,
+      farm_info: farm_info,
+      farm_loc: farm_loc,
     });
   } catch (err) {
     return res.status(500).json(err);
