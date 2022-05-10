@@ -2,39 +2,48 @@ const pool = require("../db");
 const express = require("express");
 const router = express.Router();
 
-router.get("/mdeView_main", async (req, res, next) => {
+router.get("/mdView_main", async (req, res, next) => {
   var resultCode = 404;
   var message = "에러가 발생했습니다.";
 
   try {
     //문제 없으면 try문 실행
-    const data = await pool.query("SELECT md_name, farm_id FROM md");
-    //가게 이름: id = 1인 가게만 일단 출력되도록
-    var farm_name = await pool.query(
-      "SELECT farm_name FROM farm WHERE farm_id = 1"
-    ); //일단 1로 해두고 나중에 수정 예정
-    farm_name = farm_name[0]; //각 farm name
-    console.log(farm_name);
-    //md 이름
-    const md_name = data[0][0].md_name;
+    const data = await pool.query("SELECT md_id, store_id FROM pickup");
 
-    const md = data[0];
-    var count = await pool.query("SELECT COUNT(*) FROM md where farm_id = 1");
-    console.log("19행");
-    console.log(data[0]);
+    let st_name = new Array();
+    let md_name = new Array();
+
+    let count = await pool.query("SELECT COUNT(*) FROM pickup");
     count = count[0][0]["COUNT(*)"];
-    console.log(count);
-    md = data[0];
+
+    for (let i = 0; i < count; i++) {
+      let connection = await pool.getConnection(async (conn) => conn);
+      store_name = await pool.query(
+        "SELECT store_name FROM store WHERE store_id = ?",
+        [data[0][i].store_id]
+      );
+      st_name[i] = store_name[0][0].store_name;
+      connection.release();
+    }
+
+    for (let i = 0; i < count; i++) {
+      let connection = await pool.getConnection(async (conn) => conn);
+      md_n = await pool.query("SELECT md_name FROM md WHERE md_id = ?", [
+        data[0][i].md_id,
+      ]);
+      md_name[i] = md_n[0][0].md_name;
+      connection.release();
+    }
+
+    console.log(st_name);
+    console.log(md_name);
 
     return res.json({
       code: resultCode,
       message: message,
-      farm_name: farm_name,
+      st_name: st_name,
       md_name: md_name,
-      //   far_mainItem: farm_mainItem,
       count: count,
-      md: md,
-      // data: data,
     });
   } catch (err) {
     return res.status(500).json(err);
