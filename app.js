@@ -9,6 +9,7 @@ const farmViewRouter = require("./routes/farmView.js");
 const storeViewRouter = require("./routes/storeView.js");
 const mdViewMainRouter = require("./routes/mdView_main.js");
 const kakaoLoginRouter = require("./routes/kakaoLogin.js");
+const farmDetailRouter = require("./routes/farmDetail.js");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -24,6 +25,7 @@ app.post("/agreePopup", agreePopupRouter);
 app.get("/farmView", farmViewRouter);
 app.get("/storeView", storeViewRouter);
 app.get("/mdView_main", mdViewMainRouter);
+app.post("/farmDetail", farmDetailRouter);
 
 app.listen(3000, function () {
   console.log("server is running.");

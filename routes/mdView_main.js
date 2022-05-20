@@ -35,8 +35,8 @@ router.get("/mdView_main", async (req, res, next) => {
       connection.release();
     }
 
-    console.log(st_name);
-    console.log(md_name);
+    // console.log(st_name);
+    // console.log(md_name);
 
     return res.json({
       code: resultCode,
