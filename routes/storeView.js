@@ -24,7 +24,7 @@ router.get("/storeView", async (req, res, next) => {
     let store_restDays = new Array();
     let store_loc = new Array();
     let store_lat = new Array();
-    let store_long= new Array();
+    let store_long = new Array();
 
     let count = await pool.query("SELECT COUNT(*) FROM pickup");
     count = count[0][0]["COUNT(*)"];
@@ -36,13 +36,13 @@ router.get("/storeView", async (req, res, next) => {
       );
       st_arr[i] = store_name[0][0].store_name;
       //세부
-      store_info[i]=store_name[0][0].store_info;
-      store_hours[i]=store_name[0][0].store_hours;
-      store_restDays[i]=store_name[0][0].store_restDays;
-      store_loc[i]=store_name[0][0].store_loc;
-      store_lat[i]=store_name[0][0].store_lat;
-      store_long[i]=store_name[0][0].store_long;
-      
+      store_info[i] = store_name[0][0].store_info;
+      store_hours[i] = store_name[0][0].store_hours;
+      store_restDays[i] = store_name[0][0].store_restDays;
+      store_loc[i] = store_name[0][0].store_loc;
+      store_lat[i] = store_name[0][0].store_lat;
+      store_long[i] = store_name[0][0].store_long;
+
       connection.release();
     }
 
@@ -58,12 +58,11 @@ router.get("/storeView", async (req, res, next) => {
       connection.release();
     }
 
-    console.log("66행");
-    console.log(store_info);
-    console.log(store_hours);
-    console.log(store_restDays);
-    console.log(store_loc);
-
+    // console.log("66행");
+    // console.log(store_info);
+    // console.log(store_hours);
+    // console.log(store_restDays);
+    // console.log(store_loc);
 
     return res.json({
       code: resultCode,
@@ -75,13 +74,12 @@ router.get("/storeView", async (req, res, next) => {
       pu_start: pu_start,
       pu_end: pu_end,
       // 세부
-      store_info:store_info,
-      store_hours:store_hours,
+      store_info: store_info,
+      store_hours: store_hours,
       store_restDays: store_restDays,
       store_loc: store_loc,
       store_lat: store_lat,
       store_long: store_long,
-
     });
   } catch (err) {
     return res.status(500).json(err);
