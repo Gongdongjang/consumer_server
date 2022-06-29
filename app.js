@@ -17,6 +17,11 @@ app.use(bodyParser.json());
 app.get("/", async (req, res) => {
   res.send("consumer_server");
 });
+
+app.get("/post_search",(req, res) => {
+  res.sendFile(__dirname + "/postSearch.html");
+});
+
 app.post("/login", loginRouter);
 app.post("/signup", signupRouter);
 app.post("/kakaoLogin", kakaoLoginRouter);
@@ -26,6 +31,7 @@ app.get("/farmView", farmViewRouter);
 app.get("/storeView", storeViewRouter);
 app.get("/mdView_main", mdViewMainRouter);
 app.post("/farmDetail", farmDetailRouter);
+
 
 app.listen(3000, function () {
   console.log("server is running.");
