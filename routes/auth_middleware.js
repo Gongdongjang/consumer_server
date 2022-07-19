@@ -1,6 +1,4 @@
 const jwt = require("jsonwebtoken");
-// const jwt_secret = require('./config').jwt_secret;
-const key = process.env.SECRET_KEY;
 
 const get_cookies = (req) => {
   if (req.headers.cookie) {

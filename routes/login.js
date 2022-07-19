@@ -3,24 +3,15 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const jwt_secret = require("./config").jwt_secret;
-// console.log(jwt_secret);
-// const dotenv = require("dotenv");
-
-// dotenv.config();
 
 router.post("/login", async (req, res, next) => {
-  const {user_id, password} = req.body;
-  // const key = process.env.SECRET_KEY;
-  // let token = "";
+  const {id, password} = req.body;
   let resultCode = 404;
   let message = "에러가 발생했습니다";
 
   try {
     //문제 없으면 try문 실행
-    const data = await pool.query("SELECT * FROM user WHERE user_id = ?", [
-      user_id,
-    ]);
+    const data = await pool.query("SELECT * FROM user WHERE user_id = ?", [id]);
     if (data[0][0] == undefined) {
       // 계정이 없다면
       resultCode = 206;
@@ -35,8 +26,7 @@ router.post("/login", async (req, res, next) => {
       // 다른 경우는 없다고 판단하여 성공
       resultCode = 200;
       message = "로그인 성공! " + data[0][0].user_name + "님 환영합니다!";
-      console.log("36");
-      //이 아래부터 안돼
+
       const access_token = await jwt.sign(
         {
           id: data[0][0].user_id,
@@ -46,7 +36,6 @@ router.post("/login", async (req, res, next) => {
         jwt_secret,
         {expiresIn: "1h"} //만료 시간 1시간
       );
-      console.log("51행");
 
       const refresh_token = await jwt.sign(
         {
@@ -55,24 +44,32 @@ router.post("/login", async (req, res, next) => {
         jwt_secret,
         {expiresIn: "14d"}
       );
-      console.log("54행");
+
       res.cookie("access_token", access_token, {
         httpOnly: true,
         maxAge: 60000 * 60,
       });
+
       res.cookie("refresh_token", refresh_token, {
         httpOnly: true,
         maxAge: 60000 * 60 * 24 * 14,
       });
+
+      const insertRef = await pool.query(
+        `UPDATE user SET refresh_token = ? where user_id = ?`,
+        [refresh_token, id]
+      );
+
+      return res.json({
+        code: resultCode,
+        message: message,
+        id: id,
+        access_token: access_token,
+        refresh_token: refresh_token,
+      });
     }
-    return res.json({
-      code: resultCode,
-      message: message,
-      user_id: user_id,
-      access_token: access_token,
-      refresh_token: refresh_token,
-    });
   } catch (err) {
+    console.error(err);
     return res.status(500).json(err);
   }
 });
