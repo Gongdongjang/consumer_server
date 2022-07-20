@@ -23,12 +23,12 @@ app.get("/", async (req, res) => {
 app.use("/signup", signupRouter);
 //app.use("/getId", require("./routes/getId"));
 app.post("/kakaoLogin", kakaoLoginRouter);
+app.post("/googleLogin", googleLoginRouter);
 
 app.use(auth_middleware);
 app.post("/login", loginRouter);
 app.get("/logout", logoutRouter);
 
-app.post("/googleLogin", googleLoginRouter);
 app.post("/agreePopup", agreePopupRouter);
 app.get("/farmView", farmViewRouter);
 app.get("/storeView", storeViewRouter);

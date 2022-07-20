@@ -4,12 +4,16 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 const CryptoJS = require("crypto-js");
-const naver = {};
+const naver = {
+  id: "ncp:sms:kr:286992432251:gdjang",
+  console_secret: "LuPOlQ3q6em8ogtUwUpYNwCRCmfkDgaXTOkza9e8",
+  access: "hBMU8Fn5CS2UYMptF749",
+};
 
 //회원가입
 router.post("/", async (req, res, next) => {
   console.log(req.body);
-  const {id, password, name, nickname, mobile_no, push_allow, gender} =
+  const {id, password, name, nickname, phone_number, push_allow, gender} =
     req.body;
   const passwordBy = bcrypt.hashSync(password, 10); // sync
   var resultCode = 404;
@@ -18,7 +22,7 @@ router.post("/", async (req, res, next) => {
     //문제 없으면 try문 실행
     const data = await pool.query(
       "INSERT INTO user (user_id, password, user_name, nickname, mobile_no, push_allow, gender) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [id, passwordBy, name, nickname, mobile_no, push_allow, gender]
+      [id, passwordBy, name, nickname, phone_number, push_allow, gender]
     );
     resultCode = 200;
     message = "회원가입에 성공했습니다!";

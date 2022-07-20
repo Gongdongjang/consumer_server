@@ -75,8 +75,6 @@ router.post("/login", async (req, res, next) => {
 });
 
 const get_cookies = (req) => {
-  console.log("77행");
-
   if (req.headers.cookie) {
     let cookies = {};
     req.headers &&
