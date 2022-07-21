@@ -20,8 +20,15 @@ app.get("/", async (req, res) => {
   res.send("consumer_server");
 });
 
+
+app.get("/post_search",(req, res) => {
+  res.sendFile(__dirname + "/postSearch.html");
+});
+
+
 app.use("/signup", signupRouter);
 //app.use("/getId", require("./routes/getId"));
+
 app.post("/kakaoLogin", kakaoLoginRouter);
 app.post("/googleLogin", googleLoginRouter);
 
@@ -34,6 +41,7 @@ app.get("/farmView", farmViewRouter);
 app.get("/storeView", storeViewRouter);
 app.get("/mdView_main", mdViewMainRouter);
 app.post("/farmDetail", farmDetailRouter);
+
 
 app.listen(3000, function () {
   console.log("server is running.");
