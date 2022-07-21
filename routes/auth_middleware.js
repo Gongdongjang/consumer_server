@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const get_cookies = (req) => {
   if (req.headers.cookie) {
@@ -30,7 +31,7 @@ const auth_middleware = async (req, res, next) => {
         // access_token = access_token['access_token'];
         try {
           // access_token 유효하면 인증 완료
-          req.decode = jwt.verify(access_token, jwt_secret);
+          req.decode = jwt.verify(access_token, process.env.jwt_secret);
           next();
         } catch (e) {
           // access_token 만료 -> /refresh 필요

@@ -22,14 +22,11 @@ app.get("/", async (req, res) => {
   res.send("consumer_server");
 });
 
-
 app.get("/post_search", (req, res) => {
   res.sendFile(__dirname + "/postSearch.html");
 });
 
-
 app.use("/signup", signupRouter);
-//app.use("/getId", require("./routes/getId"));
 app.use("/register_address", addressRouter);
 
 app.post("/kakaoLogin", kakaoLoginRouter);
@@ -39,7 +36,6 @@ app.post("/login", loginRouter);
 app.get("/logout", logoutRouter);
 
 app.post("/agreePopup", agreePopupRouter);
-
 
 app.get("/farmView", farmViewRouter);
 app.get("/storeView", storeViewRouter);

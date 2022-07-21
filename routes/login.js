@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 router.post("/login", async (req, res, next) => {
   const {id, password} = req.body;
@@ -33,7 +34,7 @@ router.post("/login", async (req, res, next) => {
           nickname: data[0][0].nickname,
           name: data[0][0].user_name,
         },
-        jwt_secret,
+        process.env.jwt_secret,
         {expiresIn: "1h"} //만료 시간 1시간
       );
 
@@ -41,7 +42,7 @@ router.post("/login", async (req, res, next) => {
         {
           id: data[0][0].user_id,
         },
-        jwt_secret,
+        process.env.jwt_secret,
         {expiresIn: "14d"}
       );
 
@@ -96,7 +97,7 @@ router.get("/refresh", async (req, res) => {
   } else {
     refresh_token = refresh_token["refresh_token"];
     try {
-      const refresh_verify = jwt.verify(refresh_token, jwt_secret);
+      const refresh_verify = jwt.verify(refresh_token, process.env.jwt_secret);
 
       const [user, fields] = await db.execute(
         "SELECT * FROM user WHERE user_id = ?",
@@ -108,7 +109,7 @@ router.get("/refresh", async (req, res) => {
           nickname: user[0].nickname,
           name: user[0].user_name,
         },
-        jwt_secret,
+        process.env.jwt_secret,
         {expiresIn: "1h"}
       );
 

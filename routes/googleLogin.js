@@ -2,10 +2,11 @@ const pool = require("../db");
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 router.post("/googleLogin", async (req, res, next) => {
   console.log("구글 로그인");
-  //console.log(req.body); 
+  //console.log(req.body);
 
   const {id, username, nickname, sns_type /*, id_token, access_token*/} =
     req.body;
@@ -26,7 +27,7 @@ router.post("/googleLogin", async (req, res, next) => {
           nickname: nickname,
           name: username,
         },
-        jwt_secret,
+        process.env.jwt_secret,
         {expiresIn: "1h"} //만료 시간 1시간
       );
 
@@ -34,10 +35,10 @@ router.post("/googleLogin", async (req, res, next) => {
         {
           id: id,
         },
-        jwt_secret,
+        process.env.jwt_secret,
         {expiresIn: "14d"}
       );
-      
+
       res.cookie("access_token", access_token, {
         httpOnly: true,
         maxAge: 60000 * 60,
@@ -93,7 +94,7 @@ router.get("/refresh", async (req, res) => {
   } else {
     refresh_token = refresh_token["refresh_token"];
     try {
-      const refresh_verify = jwt.verify(refresh_token, jwt_secret);
+      const refresh_verify = jwt.verify(refresh_token, process.env.jwt_secret);
 
       const [user, fields] = await db.execute(
         "SELECT * FROM user WHERE user_id = ?",
@@ -105,7 +106,7 @@ router.get("/refresh", async (req, res) => {
           nickname: user[0].nickname,
           name: user[0].user_name,
         },
-        jwt_secret,
+        process.env.jwt_secret,
         {expiresIn: "1h"}
       );
 
