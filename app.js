@@ -10,9 +10,9 @@ const storeViewRouter = require("./routes/storeView.js");
 const mdViewMainRouter = require("./routes/mdView_main.js");
 const kakaoLoginRouter = require("./routes/kakaoLogin.js");
 const farmDetailRouter = require("./routes/farmDetail.js");
-const auth_middleware = require("./routes/auth_middleware");
 const logoutRouter = require("./routes/logout");
 const addressRouter=require("./routes/register_address.js");
+const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -35,7 +35,6 @@ app.use("/register_address", addressRouter);
 app.post("/kakaoLogin", kakaoLoginRouter);
 app.post("/googleLogin", googleLoginRouter);
 
-app.use(auth_middleware);
 app.post("/login", loginRouter);
 app.get("/logout", logoutRouter);
 
@@ -47,6 +46,7 @@ app.get("/storeView", storeViewRouter);
 app.get("/mdView_main", mdViewMainRouter);
 app.post("/farmDetail", farmDetailRouter);
 
+app.use(auth_middleware);
 
 app.listen(3000, function () {
   console.log("server is running.");
