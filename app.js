@@ -12,7 +12,7 @@ const kakaoLoginRouter = require("./routes/kakaoLogin.js");
 const farmDetailRouter = require("./routes/farmDetail.js");
 const auth_middleware = require("./routes/auth_middleware");
 const logoutRouter = require("./routes/logout");
-const addressRouter=require("./routes/register_address.js");
+const addressRouter = require("./routes/register_address.js");
 // const refreshRouter = require("./routes/")
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -22,31 +22,27 @@ app.get("/", async (req, res) => {
   res.send("consumer_server");
 });
 
-
 app.get("/post_search", (req, res) => {
   res.sendFile(__dirname + "/postSearch.html");
 });
 
-
 app.use("/signup", signupRouter);
-//app.use("/getId", require("./routes/getId"));
 app.use("/register_address", addressRouter);
 
 app.post("/kakaoLogin", kakaoLoginRouter);
 app.post("/googleLogin", googleLoginRouter);
 
-app.use(auth_middleware);
 app.post("/login", loginRouter);
 app.get("/logout", logoutRouter);
 
 app.post("/agreePopup", agreePopupRouter);
-
 
 app.get("/farmView", farmViewRouter);
 app.get("/storeView", storeViewRouter);
 app.get("/mdView_main", mdViewMainRouter);
 app.post("/farmDetail", farmDetailRouter);
 
+app.use(auth_middleware);
 
 app.listen(3000, function () {
   console.log("server is running.");
