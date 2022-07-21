@@ -2,11 +2,11 @@ const pool = require("../db");
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const jwt_secret =
-  "e43348b14eaa39321ae3e59047fcc5a4f44ac4e110bafbd129c03896a3cfa60465f011073e9a08499835dad2c29c344d5abfa1a9f66ae26868bf31293945f122";
 
 router.post("/googleLogin", async (req, res, next) => {
-  // console.log("구글 로그인");
+  console.log("구글 로그인");
+  //console.log(req.body); 
+
   const {id, username, nickname, sns_type /*, id_token, access_token*/} =
     req.body;
   var resultCode = 404;
@@ -37,7 +37,7 @@ router.post("/googleLogin", async (req, res, next) => {
         jwt_secret,
         {expiresIn: "14d"}
       );
-
+      
       res.cookie("access_token", access_token, {
         httpOnly: true,
         maxAge: 60000 * 60,
@@ -61,7 +61,7 @@ router.post("/googleLogin", async (req, res, next) => {
     return res.json({
       code: resultCode,
       message: message,
-      user_id: id,
+      id: id,
       access_token: access_token,
       refresh_token: refresh_token,
     });
