@@ -9,7 +9,14 @@ const farmViewRouter = require("./routes/farmView.js");
 const storeViewRouter = require("./routes/storeView.js");
 const mdViewMainRouter = require("./routes/mdView_main.js");
 const kakaoLoginRouter = require("./routes/kakaoLogin.js");
+const farmDetailRouter = require("./routes/farmDetail.js");
+const logoutRouter = require("./routes/logout");
+const addressRouter=require("./routes/register_address.js");
 const jointPurchaseRouter = require("./routes/jointPurchase.js");
+
+const auth_middleware = require("./routes/auth_middleware");
+// const refreshRouter = require("./routes/")
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -17,15 +24,32 @@ app.use(bodyParser.json());
 app.get("/", async (req, res) => {
   res.send("consumer_server");
 });
-app.post("/login", loginRouter);
-app.post("/signup", signupRouter);
+
+app.get("/post_search", (req, res) => {
+  res.sendFile(__dirname + "/postSearch.html");
+});
+
+app.use("/signup", signupRouter);
+app.use("/register_address", addressRouter);
+
 app.post("/kakaoLogin", kakaoLoginRouter);
 app.post("/googleLogin", googleLoginRouter);
+
+app.post("/login", loginRouter);
+app.get("/logout", logoutRouter);
+
 app.post("/agreePopup", agreePopupRouter);
+
 app.get("/farmView", farmViewRouter);
 app.get("/storeView", storeViewRouter);
 app.get("/mdView_main", mdViewMainRouter);
+
+app.post("/farmDetail", farmDetailRouter);
+
 app.get("/jointPurchase", jointPurchaseRouter);
+
+app.use(auth_middleware);
+
 
 app.listen(3000, function () {
   console.log("server is running.");
