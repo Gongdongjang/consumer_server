@@ -12,8 +12,11 @@ const kakaoLoginRouter = require("./routes/kakaoLogin.js");
 const farmDetailRouter = require("./routes/farmDetail.js");
 const logoutRouter = require("./routes/logout");
 const addressRouter=require("./routes/register_address.js");
+const jointPurchaseRouter = require("./routes/jointPurchase.js");
+
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -40,9 +43,13 @@ app.post("/agreePopup", agreePopupRouter);
 app.get("/farmView", farmViewRouter);
 app.get("/storeView", storeViewRouter);
 app.get("/mdView_main", mdViewMainRouter);
+
 app.post("/farmDetail", farmDetailRouter);
 
+app.get("/jointPurchase", jointPurchaseRouter);
+
 app.use(auth_middleware);
+
 
 app.listen(3000, function () {
   console.log("server is running.");
