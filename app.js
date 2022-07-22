@@ -46,7 +46,7 @@ app.get("/mdView_main", mdViewMainRouter);
 
 app.post("/farmDetail", farmDetailRouter);
 
-app.get("/jointPurchase", jointPurchaseRouter);
+app.post("/jointPurchase", jointPurchaseRouter);
 
 app.use(auth_middleware);
 
