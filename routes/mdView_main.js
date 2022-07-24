@@ -7,78 +7,37 @@ router.get("/mdView_main", async (req, res, next) => {
   var message = "에러가 발생했습니다.";
 
   try {
-    //문제 없으면 try문 실행
-    const data = await pool.query(
-      "SELECT pu_start, pu_end, md_id, store_id FROM pickup"
+    //md, payment, pickup, store, farm
+    const [md_result] = await pool.execute(
+      "select md.md_id, md_name, pu_start, pu_end, pay_schedule, farm_name, store_name from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id ORDER BY md.md_id desc"
     );
 
-    let pu_start = new Array();
-    let pu_end = new Array();
-    let store_name = new Array();
-    let md_name = new Array();
-    let pay_schedule = new Array();
-    let farm_id = new Array();
-    let farm_name = new Array();
-    // console.log("22");
-
-    let count = await pool.query("SELECT COUNT(*) FROM md"); //md나 pickup이나 행 개수가 같아야 되는 것 같음
+    let count = await pool.query("SELECT COUNT(*) FROM md");
     count = count[0][0]["COUNT(*)"];
 
-    for (let i = 0; i < count; i++) {
-      let connection = await pool.getConnection(async (conn) => conn);
-      let st_name = await pool.query(
-        "SELECT store_name FROM store WHERE store_id = ?",
-        [data[0][i].store_id]
-      );
-      pu_start[i] = new Date(data[0][i].pu_start).toLocaleDateString();
-      pu_end[i] = new Date(data[0][i].pu_end).toLocaleDateString();
-      store_name[i] = st_name[0][0].store_name;
-      connection.release();
-    }
-
-    // console.log("39");
+    let pay_schedule = new Array();
+    let pu_start = new Array();
+    let pu_end = new Array();
 
     for (let i = 0; i < count; i++) {
-      let connection = await pool.getConnection(async (conn) => conn);
-      md_n = await pool.query(
-        "SELECT md_name, farm_id, pay_schedule FROM md, payment WHERE md.md_id = ?",
-        [data[0][i].md_id]
-      );
-      md_name[i] = md_n[0][0].md_name;
-      pay_schedule[i] = new Date(md_n[0][i].pay_schedule).toLocaleDateString();
-      farm_id[i] = md_n[0][0].farm_id;
-      connection.release();
+      pay_schedule[i] = new Date(
+        md_result[i].pay_schedule
+      ).toLocaleDateString();
+      pu_start[i] = new Date(md_result[i].pu_start).toLocaleDateString();
+      pu_end[i] = new Date(md_result[i].pu_end).toLocaleDateString();
     }
-
-    // console.log("53");
-
-    for (let i = 0; i < count; i++) {
-      let connection = await pool.getConnection(async (conn) => conn);
-      // console.log(farm_id);
-
-      let frm_name = await pool.query(
-        `SELECT farm_name FROM farm where farm_id = ?`,
-        [farm_id[i]]
-      );
-      // console.log(farm_id);
-      farm_name[i] = frm_name[0][0].farm_name;
-      connection.release();
-    }
-    // console.log(st_name);
-    // console.log(count);
 
     return res.json({
       code: resultCode,
       message: message,
-      store_name: store_name,
-      md_name: md_name,
       count: count,
+      md_result: md_result,
+      pay_schedule: pay_schedule,
       pu_start: pu_start,
       pu_end: pu_end,
-      pay_schedule: pay_schedule,
-      farm_name: farm_name,
     });
   } catch (err) {
+    console.error(err);
     return res.status(500).json(err);
   }
 });
