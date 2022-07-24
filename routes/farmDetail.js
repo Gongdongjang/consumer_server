@@ -19,9 +19,13 @@ router.post("/farmDetail", async (req, res, next) => {
     let pay_schedule = new Array();
 
     for (let i = 0; i < md_data.length; i++) {
-      pu_start[i] = new Date(md_data[0].pu_start).toLocaleDateString();
-      pu_end[i] = new Date(md_data[0].pu_end).toLocaleDateString();
-      pay_schedule[i] = new Date(md_data[0].pay_schedule).toLocaleDateString();
+      pu_start[i] = new Date(md_data[i].pu_start).toLocaleDateString();
+      pu_end[i] = new Date(md_data[i].pu_end).toLocaleDateString();
+      pay_schedule[i] = new Date(md_data[i].pay_schedule).toLocaleDateString();
+
+      // console.log(pu_start);
+      // console.log(pu_end);
+      // console.log(pay_schedule);
     }
 
     return res.json({
