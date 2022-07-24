@@ -43,6 +43,7 @@ app.get("/farmView", farmViewRouter);
 app.post("/farmDetail", farmDetailRouter);
 
 app.get("/storeView", storeViewRouter);
+app.post("/storeDetail", require("./routes/storeDetail.js"));
 app.get("/mdView_main", mdViewMainRouter);
 
 app.post("/jointPurchase", jointPurchaseRouter);
