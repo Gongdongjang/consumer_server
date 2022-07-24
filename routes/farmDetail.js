@@ -7,6 +7,11 @@ router.post("/farmDetail", async (req, res, next) => {
   var resultCode = 404;
   var message = "에러가 발생했습니다.";
   try {
+    const [farm_data] = await pool.execute(
+      `SELECT * FROM farm WHERE farm_id = ? `,
+      [farm_id]
+    );
+
     const [md_data] = await pool.execute(
       `SELECT * FROM md join payment on md.md_id = payment.md_id join pickup on md.md_id = pickup.md_id join store on pickup.store_id = store.store_id where md.farm_id = ?`,
       [farm_id]
@@ -22,15 +27,12 @@ router.post("/farmDetail", async (req, res, next) => {
       pu_start[i] = new Date(md_data[i].pu_start).toLocaleDateString();
       pu_end[i] = new Date(md_data[i].pu_end).toLocaleDateString();
       pay_schedule[i] = new Date(md_data[i].pay_schedule).toLocaleDateString();
-
-      // console.log(pu_start);
-      // console.log(pu_end);
-      // console.log(pay_schedule);
     }
 
     return res.json({
       code: resultCode,
       message: message,
+      farm_data: farm_data,
       md_data: md_data,
       pay_schedule: pay_schedule,
       pu_start: pu_start,
