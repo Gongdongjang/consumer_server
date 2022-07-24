@@ -12,7 +12,6 @@ const naver = {
 
 //회원가입
 router.post("/", async (req, res, next) => {
-  console.log(req.body);
   const {id, password, name, nickname, phone_number, push_allow, gender} =
     req.body;
   const passwordBy = bcrypt.hashSync(password, 10); // sync
@@ -26,7 +25,6 @@ router.post("/", async (req, res, next) => {
     );
     resultCode = 200;
     message = "회원가입에 성공했습니다!";
-    console.log("회원가입 성공");
     return res.json({
       code: resultCode,
       message: message,
@@ -84,7 +82,6 @@ function makeSignature(time) {
 router.post("/phone-check", async (req, res) => {
   const body = req.body;
   const phone_number = body.phone_number;
-  console.log(body);
 
   const sms_url = `https://sens.apigw.ntruss.com/sms/v2/services/${naver.id}/messages`;
   const time_stamp = Date.now().toString();
@@ -98,7 +95,7 @@ router.post("/phone-check", async (req, res) => {
     );
     res.send({msg: "success"});
   } catch (e) {
-    console.log(e);
+    console.error(err);
     res.status(500).send({msg: "server error"});
   }
 });
@@ -110,7 +107,6 @@ router.post("/phone-check/verify", async (req, res) => {
 
   let phone_valid = false;
 
-  console.log(code);
   try {
     const [result, field] = await pool.execute(
       `SELECT * FROM sms_validation WHERE phone_number = ?`,
@@ -120,15 +116,14 @@ router.post("/phone-check/verify", async (req, res) => {
       result[0].expire.getHours() + 9
     );
     const now = Date.now();
-    console.log(now);
-    console.log(expire_time, now);
+
     if (code === result[0].code && expire_time > now) {
       phone_valid = true;
     }
 
     res.send({phone_valid: phone_valid});
   } catch (e) {
-    console.log(e);
+    console.error(err);
     res.status(500).send({msg: "server error"});
   }
 });

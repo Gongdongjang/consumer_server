@@ -5,17 +5,12 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 router.post("/googleLogin", async (req, res, next) => {
-  console.log("구글 로그인");
-  //console.log(req.body);
 
   const {id, username, nickname, sns_type /*, id_token, access_token*/} =
     req.body;
   var resultCode = 404;
   var message = "에러가 발생했습니다";
   let refresh_token, access_token;
-
-  // console.log(id_token);
-  // console.log(access_token);
 
   try {
     let data = await pool.query("SELECT * FROM user WHERE user_id = ?", [id]);
@@ -87,7 +82,6 @@ const get_cookies = (req) => {
 // access_token 만료 -> refresh token 을 이용해 재발급
 router.get("/refresh", async (req, res) => {
   let refresh_token = get_cookies(req);
-  console.log("91행");
 
   if (refresh_token === undefined) {
     res.sendStatus(400);

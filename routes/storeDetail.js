@@ -4,9 +4,7 @@ const router = express.Router();
 
 router.post("/storeDetail", async (req, res, next) => {
 
-    //console.log("store_detail_post 왔음");
     const store_id=parseInt(req.body.id);
-    console.log(store_id);
     let resultCode = 404;
     let message = "에러가 발생했습니다.";
   

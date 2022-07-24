@@ -4,7 +4,6 @@ const router = express.Router();
 
 router.post("/", async (req, res, next) => {
   console.log("register_address 도착");
-  //console.log(req.body);
   const userid=req.body.id;
   const latlonglist=req.body.latlong;
   const addresslist=latlonglist.substring(1, latlonglist.length - 1) // [ ] 제거
@@ -16,9 +15,6 @@ router.post("/", async (req, res, next) => {
     address[i]=parseFloat(address[i]);  //주소 string-> float 형 변환
   }
 
-  console.log(address);
-  //console.log(userid);
-  console.log("14행");
   const resultCode = 404;
   const message = "에러가 발생했습니다.";
   let userno;
@@ -47,7 +43,7 @@ router.post("/", async (req, res, next) => {
     const data = await pool.query(sql, param);
     resultCode = 200;
     message = "주소저장에 성공했습니다!";
-    console.log("주소저장 성공");
+
     return res.json({
       code: resultCode,
       message: message,
