@@ -13,6 +13,7 @@ const farmDetailRouter = require("./routes/farmDetail.js");
 const logoutRouter = require("./routes/logout");
 const addressRouter = require("./routes/register_address.js");
 const jointPurchaseRouter = require("./routes/jointPurchase.js");
+const keepRouter = require("./routes/keep.js");
 
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
@@ -47,6 +48,9 @@ app.post("/storeDetail", require("./routes/storeDetail.js"));
 app.get("/mdView_main", mdViewMainRouter);
 
 app.post("/jointPurchase", jointPurchaseRouter);
+
+app.post("/isKeep", keepRouter);
+app.post("/keep", keepRouter);
 
 app.use(auth_middleware);
 
