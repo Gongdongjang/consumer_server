@@ -8,8 +8,8 @@ router.post("/isKeep", async (req, res, next) => {
         user_id,
         md_id,
     } = req.body;
-    var resultCode = 404;
-    var message = "에러가 발생했습니다.";
+    let resultCode = 404;
+    let message = "에러가 발생했습니다.";
 
     try {
         const [keep_data] = await pool.query(
@@ -42,8 +42,8 @@ router.post("/keep", async (req, res, next) => {
         user_id,
         md_id,
     } = req.body;
-    var resultCode = 404;
-    var message = "에러가 발생했습니다.";
+    let resultCode = 404;
+    let message = "에러가 발생했습니다.";
 
     try {
         const [keep_data] = await pool.query(
