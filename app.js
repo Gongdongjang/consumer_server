@@ -14,6 +14,7 @@ const logoutRouter = require("./routes/logout");
 const addressRouter = require("./routes/register_address.js");
 const jointPurchaseRouter = require("./routes/jointPurchase.js");
 const keepRouter = require("./routes/keep.js");
+const orderDetailRouter = require("./routes/orderDetail");
 
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
@@ -39,6 +40,8 @@ app.post("/login", loginRouter);
 app.get("/logout", logoutRouter);
 
 app.post("/agreePopup", agreePopupRouter);
+
+app.use("/orderDetailView", orderDetailRouter);
 
 app.get("/farmView", farmViewRouter);
 app.post("/farmDetail", farmDetailRouter);
