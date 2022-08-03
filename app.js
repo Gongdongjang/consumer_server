@@ -15,6 +15,7 @@ const addressRouter = require("./routes/register_address.js");
 const jointPurchaseRouter = require("./routes/jointPurchase.js");
 const keepRouter = require("./routes/keep.js");
 const orderDetailRouter = require("./routes/orderDetail");
+const orderDetailMdRouter = require("./routes/orderDetailMd");
 
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
@@ -42,6 +43,7 @@ app.get("/logout", logoutRouter);
 app.post("/agreePopup", agreePopupRouter);
 
 app.use("/orderDetailView", orderDetailRouter);
+app.use("/orderDetailMd", orderDetailMdRouter);
 
 app.get("/farmView", farmViewRouter);
 app.post("/farmDetail", farmDetailRouter);
