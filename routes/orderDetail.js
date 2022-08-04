@@ -10,7 +10,7 @@ router.post("/", async (req, res, next) => {
   try {
     //문제 없으면 try문 실행
     const [order_detail] = await pool.execute(
-      `SELECT order_select_qty, order_pu_date, store_name, store_lat, store_long, pay_price, md_name FROM gdjang.order join store on gdjang.order.store_id = store.store_id join payment on payment.md_id = gdjang.order.md_id join md on gdjang.order.md_id = md.md_id WHERE gdjang.order.user_id = ${user_id}`
+      `SELECT order_id, order_select_qty, order_pu_date, store_name, store_loc, store_lat, store_long, pay_price, md_name FROM gdjang.order join store on gdjang.order.store_id = store.store_id join payment on payment.md_id = gdjang.order.md_id join md on gdjang.order.md_id = md.md_id WHERE gdjang.order.user_id = ${user_id}`
     );
 
     let pu_date = new Array();
@@ -19,7 +19,7 @@ router.post("/", async (req, res, next) => {
     }
 
     resultCode = 200;
-    message = "storeView 성공";
+    message = "orderDetail 성공";
 
     //사용자주소 추가하기.
     //const [distance_result]=
