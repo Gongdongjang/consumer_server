@@ -8,7 +8,6 @@ router.post("/keeplist", async (req, res, next) => {
     let resultCode = 404;
     let message = "에러가 발생했습니다.";
 
-    console.log(user_id);
     try {
         //farmer_name 추가 필요
         //mdImg_thumbnail, mdImg_detail 맞는지 확인
@@ -23,8 +22,6 @@ router.post("/keeplist", async (req, res, next) => {
 
         let count = await pool.query("SELECT COUNT(*) FROM keep where user_id = ?", user_id);
         count = count[0][0]["COUNT(*)"];
-    
-        console.log(count);
 
         let pay_schedule = new Array();
         let pu_start = new Array();
@@ -35,11 +32,6 @@ router.post("/keeplist", async (req, res, next) => {
         pu_start[i] = new Date(keep_list_result[i].pu_start).toLocaleDateString();
         pu_end[i] = new Date(keep_list_result[i].pu_end).toLocaleDateString();
         }
-
-        console.log(keep_list_result);
-        console.log(pay_schedule);
-        console.log(pu_start);
-        console.log(pu_end);
 
         return res.json({
         code: resultCode,
