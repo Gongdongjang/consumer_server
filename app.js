@@ -14,6 +14,7 @@ const logoutRouter = require("./routes/logout");
 const addressRouter = require("./routes/register_address.js");
 const jointPurchaseRouter = require("./routes/jointPurchase.js");
 const keepRouter = require("./routes/keep.js");
+const keeplistRouter = require("./routes/keeplist.js");
 const orderDetailRouter = require("./routes/orderDetail");
 const orderDetailMdRouter = require("./routes/orderDetailMd");
 
@@ -56,6 +57,7 @@ app.post("/jointPurchase", jointPurchaseRouter);
 
 app.post("/isKeep", keepRouter);
 app.post("/keep", keepRouter);
+app.post("/keeplist", keeplistRouter);
 
 app.use(auth_middleware);
 
