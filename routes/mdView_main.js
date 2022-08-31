@@ -9,20 +9,20 @@ router.get("/mdView_main", async (req, res, next) => {
   try {
     //md, payment, pickup, store, farm
     const [md_result] = await pool.execute(
-      "select md.md_id, md_name, pu_start, pu_end, pay_schedule, farm_name, store_name from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id ORDER BY md.md_id desc"
+      "select md.md_id, md_name, pu_start, pu_end, farm_name, store_name from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id ORDER BY md.md_id desc"
     );
 
     let count = await pool.query("SELECT COUNT(*) FROM md");
     count = count[0][0]["COUNT(*)"];
 
-    let pay_schedule = new Array();
+    // let pay_schedule = new Array();
     let pu_start = new Array();
     let pu_end = new Array();
 
     for (let i = 0; i < count; i++) {
-      pay_schedule[i] = new Date(
-        md_result[i].pay_schedule
-      ).toLocaleDateString();
+      // pay_schedule[i] = new Date(
+      //   md_result[i].pay_schedule
+      // ).toLocaleDateString();
       pu_start[i] = new Date(md_result[i].pu_start).toLocaleDateString();
       pu_end[i] = new Date(md_result[i].pu_end).toLocaleDateString();
     }
@@ -32,7 +32,7 @@ router.get("/mdView_main", async (req, res, next) => {
       message: message,
       count: count,
       md_result: md_result,
-      pay_schedule: pay_schedule,
+      // pay_schedule: pay_schedule,
       pu_start: pu_start,
       pu_end: pu_end,
     });

@@ -14,7 +14,7 @@ router.post("/keeplist", async (req, res, next) => {
         //모인인원 → 남은물품, 목표인원 → 목표 수량이 맞는지 확인
         //store_filesize, farm_size은 프로필 맞는지 확인
         const [keep_list_result] = await pool.query(
-        'select keep.md_id, md_name, pu_start, pu_end, pay_schedule, farm_name, store_name from keep join payment on keep.md_id=payment.md_id join pickup on keep.md_id=pickup.md_id join store on pickup.store_id=store.store_id join stock on keep.md_id=stock.md_id join md_Img on keep.md_id=md_Img.md_id join md on md.md_id = keep.md_id join farm on md.farm_id=farm.farm_id where keep.user_id = ?', user_id
+        'select keep.md_id, md_name, pu_start, pu_end, farm_name, store_name from keep join payment on keep.md_id=payment.md_id join pickup on keep.md_id=pickup.md_id join store on pickup.store_id=store.store_id join stock on keep.md_id=stock.md_id join md_Img on keep.md_id=md_Img.md_id join md on md.md_id = keep.md_id join farm on md.farm_id=farm.farm_id where keep.user_id = ?', user_id
         );
 
         resultCode = 200;
@@ -23,12 +23,12 @@ router.post("/keeplist", async (req, res, next) => {
         let count = await pool.query("SELECT COUNT(*) FROM keep where user_id = ?", user_id);
         count = count[0][0]["COUNT(*)"];
 
-        let pay_schedule = new Array();
+        // let pay_schedule = new Array();
         let pu_start = new Array();
         let pu_end = new Array();
 
         for (let i = 0; i < count; i++) {
-        pay_schedule[i] = new Date(keep_list_result[i].pay_schedule).toLocaleDateString();
+        // pay_schedule[i] = new Date(keep_list_result[i].pay_schedule).toLocaleDateString();
         pu_start[i] = new Date(keep_list_result[i].pu_start).toLocaleDateString();
         pu_end[i] = new Date(keep_list_result[i].pu_end).toLocaleDateString();
         }
@@ -37,7 +37,7 @@ router.post("/keeplist", async (req, res, next) => {
         code: resultCode,
         message: message,
         keep_list_result: keep_list_result,
-        pay_schedule:pay_schedule,
+        // pay_schedule:pay_schedule,
         pu_start:pu_start,
         pu_end:pu_end,
         });
