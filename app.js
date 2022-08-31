@@ -17,6 +17,7 @@ const keepRouter = require("./routes/keep.js");
 const keeplistRouter = require("./routes/keeplist.js");
 const orderDetailRouter = require("./routes/orderDetail");
 const orderDetailMdRouter = require("./routes/orderDetailMd");
+const cartListRouter = require("./routes/cartList");
 
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
@@ -54,6 +55,8 @@ app.post("/storeDetail", require("./routes/storeDetail.js"));
 app.get("/mdView_main", mdViewMainRouter);
 
 app.post("/jointPurchase", jointPurchaseRouter);
+
+app.post("/cartListView", cartListRouter);
 
 app.post("/isKeep", keepRouter);
 app.post("/keep", keepRouter);
