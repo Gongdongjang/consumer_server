@@ -17,7 +17,7 @@ router.post("/jointPurchase", async (req, res, next) => {
     //pay_price와 pay_comp 추가
     //store 위치정보 추가
     const [md_detail_result] = await pool.query(
-      'select mdimg_thumbnail, md_name, farm_name, stk_remain, stk_goal, pay_price, pay_comp, pu_start, pu_end, mdImg_detail, farm_filename, farm_info, store_filename, store_name, store_info, store_lat, store_long, store_loc from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id join stock on md.md_id=stock.md_id join md_Img on md.md_id=md_Img.md_id where md.md_id = ?', md_id
+      'select mdimg_thumbnail, md_name, farm_name, stk_remain, stk_goal, pay_price, pay_comp, pu_start, pu_end, mdImg_detail, farm_info, store_filename, store_name, store_info, store_lat, store_long, store_loc from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id join stock on md.md_id=stock.md_id join md_Img on md.md_id=md_Img.md_id where md.md_id = ?', md_id
     );
 
     resultCode = 200;
