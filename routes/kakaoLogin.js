@@ -3,11 +3,11 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/kakaoLogin", async (req, res, next) => {
-  const {id, username, nickname, sns_type, refresh_token, gender} =
+  const {id, username, nickname, sns_type, refresh_token} =
     req.body;
   const sql =
-    "INSERT INTO user (user_id, user_name, nickname, sns_type, refresh_token, gender) VALUES (?, ?, ?, ?, ?, ?)";
-    const param = [id, username, nickname, sns_type, refresh_token, gender];
+    "INSERT INTO user (user_id, user_name, nickname, sns_type, refresh_token) VALUES (?, ?, ?, ?, ?)";
+    const param = [id, username, nickname, sns_type, refresh_token];
 
   //console.log(req.body);
   let resultCode = 404;
