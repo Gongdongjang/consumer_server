@@ -12,7 +12,7 @@ const naver = {
 
 //회원가입
 router.post("/", async (req, res, next) => {
-  const {id, password, name, nickname, phone_number, push_allow, gender} =
+  const {id, password, name, nickname, phone_number, push_allow} =
     req.body;
   const passwordBy = bcrypt.hashSync(password, 10); // sync
   var resultCode = 404;
@@ -20,8 +20,8 @@ router.post("/", async (req, res, next) => {
   try {
     //문제 없으면 try문 실행
     const data = await pool.query(
-      "INSERT INTO user (user_id, password, user_name, nickname, mobile_no, push_allow, gender) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [id, passwordBy, name, nickname, phone_number, push_allow, gender]
+      "INSERT INTO user (user_id, password, user_name, nickname, mobile_no, push_allow) VALUES (?, ?, ?, ?, ?, ?)",
+      [id, passwordBy, name, nickname, phone_number, push_allow]
     );
     resultCode = 200;
     message = "회원가입에 성공했습니다!";
