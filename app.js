@@ -35,6 +35,7 @@ app.get("/post_search", (req, res) => {
 
 app.use("/signup", signupRouter);
 app.use("/register_address", addressRouter);
+app.use("/get_address", require("./routes/get_address.js"));
 
 app.post("/kakaoLogin", kakaoLoginRouter);
 app.post("/googleLogin", googleLoginRouter);
