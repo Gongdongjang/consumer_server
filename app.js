@@ -64,8 +64,8 @@ app.post("/isKeep", keepRouter);
 app.post("/keep", keepRouter);
 app.post("/keeplist", keeplistRouter);
 
-app.use("/payinfo",require("./routes/payInfo.js"));
-
+app.use("/payUserInfo",require("./routes/payUserInfo.js"));
+app.use("/orderInsert", require("./routes/orderInsert.js"));
 
 app.use(auth_middleware);
 
