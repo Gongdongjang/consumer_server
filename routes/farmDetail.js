@@ -4,8 +4,8 @@ const router = express.Router();
 
 router.post("/farmDetail", async (req, res, next) => {
   const {farm_id} = req.body;
-  var resultCode = 404;
-  var message = "에러가 발생했습니다.";
+  let resultCode = 404;
+  let message = "에러가 발생했습니다.";
   try {
     const [farm_data] = await pool.execute(
       `SELECT * FROM farm WHERE farm_id = ? `,
