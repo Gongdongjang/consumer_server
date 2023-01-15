@@ -57,8 +57,6 @@ router.post("/getStdAddress", async (req, res, next) => {
       `SELECT standard_address FROM address_user WHERE userno=${userno}`
     );
 
-    // console.log(std_address_result);
-
     resultCode = 200;
     message = "기준 주소 정보 얻기 성공";
 

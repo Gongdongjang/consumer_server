@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/mdView_main", async (req, res, next) => {
-  var resultCode = 404;
-  var message = "에러가 발생했습니다.";
+  let resultCode = 404;
+  let message = "에러가 발생했습니다.";
 
   try {
     //md, payment, pickup, store, farm

@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-var bodyParser = require("body-parser");
+let bodyParser = require("body-parser");
 const loginRouter = require("./routes/login.js");
 const signupRouter = require("./routes/signup.js");
 const googleLoginRouter = require("./routes/googleLogin.js");
