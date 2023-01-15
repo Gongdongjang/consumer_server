@@ -1,6 +1,8 @@
 const pool = require("../db");
 const express = require("express");
 const router = express.Router();
+const AWS = require("aws-sdk");
+const fs = require("fs");
 
 //받은 md_id에 대한 상세 데이터 return
 router.post("/jointPurchase", async (req, res, next) => {
@@ -24,6 +26,25 @@ router.post("/jointPurchase", async (req, res, next) => {
     resultCode = 200;
     message = "제품 상세로 정보보내기 성공";
 
+    // const s3 = new AWS.S3({
+    //   accessKeyId: process.env.AWS_ACCESS_KEY,
+    //   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    // });
+
+    // const params = {
+    //   Bucket: "gdjang",
+    //   Key: md_detail_result[0].mdimg_thumbnail,
+    // };
+
+    // s3.getObject(params, (err, data) => {
+    //   if (err) {
+    //     throw err;
+    //   }
+    //   fs.writeFileSync(
+    //     `test-download.${data.ContentType.split("/")[1]}`,
+    //     data.Body
+    //   );
+    // });
     // let pay_schedule = new Date(md_detail_result[0].pay_schedule).toLocaleDateString();
     let pu_start = new Date(md_detail_result[0].pu_start).toLocaleDateString();
     let pu_end = new Date(md_detail_result[0].pu_end).toLocaleDateString();

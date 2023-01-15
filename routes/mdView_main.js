@@ -10,7 +10,7 @@ router.get("/mdView_main", async (req, res, next) => {
     //md, payment, pickup, store, farm
     //홈화면 제품리스트-> store_loc 추가
     const [md_result] = await pool.execute(
-      "select md.md_id, md_name, pu_start, pu_end, farm_name, store_name, store_loc from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id ORDER BY md.md_id desc"
+      "select md.md_id, mdimg_thumbnail, md_name, pu_start, pu_end, farm_name, store_name, store_loc from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id join md_Img on md.md_id = md_Img.md_id ORDER BY md.md_id desc"
     );
 
     let count = await pool.query("SELECT COUNT(*) FROM md");
