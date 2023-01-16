@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-var bodyParser = require("body-parser");
+let bodyParser = require("body-parser");
 const loginRouter = require("./routes/login.js");
 const signupRouter = require("./routes/signup.js");
 const googleLoginRouter = require("./routes/googleLogin.js");
@@ -64,7 +64,7 @@ app.post("/isKeep", keepRouter);
 app.post("/keep", keepRouter);
 app.post("/keeplist", keeplistRouter);
 
-app.use("/payUserInfo",require("./routes/payUserInfo.js"));
+app.use("/payUserInfo", require("./routes/payUserInfo.js"));
 app.use("/orderInsert", require("./routes/orderInsert.js"));
 
 app.use(auth_middleware);

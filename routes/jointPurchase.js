@@ -1,6 +1,8 @@
 const pool = require("../db");
 const express = require("express");
 const router = express.Router();
+const AWS = require("aws-sdk");
+const fs = require("fs");
 
 //받은 md_id에 대한 상세 데이터 return
 router.post("/jointPurchase", async (req, res, next) => {
