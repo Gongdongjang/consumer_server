@@ -9,7 +9,7 @@ router.get("/storeView", async (req, res, next) => {
   try {
     //문제 없으면 try문 실행
     const [store_result] = await pool.execute(
-      `SELECT store_id, store_name, store_info, store_hours, store_loc FROM store`
+      `SELECT * FROM store`
     );
 
     let count = await pool.query("SELECT COUNT(*) FROM store");
