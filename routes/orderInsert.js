@@ -20,7 +20,7 @@ router.post("/", async (req, res, next) => {
   try {
     //문제 없으면 try문 실행
     const [order_insert] = await pool.execute(
-      `INSERT INTO gdjang.order (order_select_qty, order_pu_date, order_date, order_md_status, order_pu_time, user_id, md_id, store_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
+      `INSERT INTO ggdjang.order (order_select_qty, order_pu_date, order_date, order_md_status, order_pu_time, user_id, md_id, store_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
       [select_qty,order_pu_date,order_date,"준비중",order_pu_time,user_id,md_id,store_id]
     );
     resultCode = 200;

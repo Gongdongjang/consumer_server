@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const axios = require("axios");
 const CryptoJS = require("crypto-js");
 const naver = {
-  id: "ncp:sms:kr:286992432251:gdjang",
+  id: "ncp:sms:kr:286992432251:ggdjang",
   console_secret: "LuPOlQ3q6em8ogtUwUpYNwCRCmfkDgaXTOkza9e8",
   access: "hBMU8Fn5CS2UYMptF749",
 };

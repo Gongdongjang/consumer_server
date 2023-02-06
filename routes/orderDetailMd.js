@@ -10,7 +10,7 @@ router.post("/", async (req, res, next) => {
   try {
     //문제 없으면 try문 실행
     let [pu_date] = await pool.execute(
-      `SELECT order_pu_date FROM gdjang.order WHERE order_id = ${order_id}`
+      `SELECT order_pu_date FROM ggdjang.order WHERE order_id = ${order_id}`
     );
 
     pu_date = new Date(pu_date[0].order_pu_date).toLocaleDateString();
