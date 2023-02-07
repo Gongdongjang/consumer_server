@@ -67,6 +67,10 @@ app.post("/keeplist", keeplistRouter);
 app.use("/payUserInfo", require("./routes/payUserInfo.js"));
 app.use("/orderInsert", require("./routes/orderInsert.js"));
 
+//알람
+app.use("/alarm_token", require("./routes/alarm_token.js"));
+
+
 app.use(auth_middleware);
 
 app.listen(3000, function () {
