@@ -5,8 +5,8 @@ const router = express.Router();
 router.post("/", async (req, res, next) => {
   let resultCode = 404;
   let message = "에러가 발생했습니다.";
-  const {user_id} = req.body.user_id;
-  console.log(user_id);
+  const {user_id} = req.body;
+  // console.log(req.body);
 
   try {
     //문제 없으면 try문 실행

@@ -51,6 +51,7 @@ router.post("/", async (req, res, next) => {
     return res.json({
       code: resultCode,
       message: message,
+      user_id: user_id,
     });
   } catch (err) {
     console.error(err);
