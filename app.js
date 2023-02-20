@@ -18,7 +18,7 @@ const keeplistRouter = require("./routes/keeplist.js");
 const orderDetailRouter = require("./routes/orderDetail");
 const orderDetailMdRouter = require("./routes/orderDetailMd");
 const cartListRouter = require("./routes/cartList");
-
+const reviewRegisterRouter = require("./routes/reviewRegister");
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
 
@@ -35,6 +35,8 @@ app.get("/post_search", (req, res) => {
 
 app.use("/signup", signupRouter);
 app.use("/register_address", addressRouter);
+app.use("/get_address", require("./routes/get_address.js"));
+app.use("/standard_address", require("./routes/standard_address.js"));
 
 app.post("/kakaoLogin", kakaoLoginRouter);
 app.post("/googleLogin", googleLoginRouter);
@@ -61,6 +63,8 @@ app.post("/cartListView", cartListRouter);
 app.post("/isKeep", keepRouter);
 app.post("/keep", keepRouter);
 app.post("/keeplist", keeplistRouter);
+
+app.use("/review", reviewRegisterRouter);
 
 app.use(auth_middleware);
 

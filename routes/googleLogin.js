@@ -53,6 +53,8 @@ router.post("/googleLogin", async (req, res, next) => {
     } else {
       resultCode = 200;
       message = data[0][0].user_name + "님 환영합니다!";
+      console.log(data[0][0].user_no);
+
     }
     return res.json({
       code: resultCode,
