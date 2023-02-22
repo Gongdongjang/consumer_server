@@ -11,10 +11,10 @@ router.post("/storeDetail", async (req, res, next) => {
     try { //문제 없으면 try문 실행
 
         //스토어 상세정보
-        const [store_result] = await pool.execute(`SELECT store_name, store_info, store_hours, store_loc FROM store WHERE store_id= ${store_id}`);
+        const [store_result] = await pool.execute(`SELECT store_name, store_info, store_loc FROM store WHERE store_id= ${store_id}`);
 
         //스토어에 있는 제품리뷰
-        const [review_result] = await pool.execute(`SELECT rvw_rating, rvw_subject, rvw_content, md.md_id, md.md_name FROM review join md on review.md_id=md.md_id WHERE store_id=${store_id}`);
+        const [review_result] = await pool.execute(`SELECT rvw_rating, rvw_content, md.md_id, md.md_name FROM review join md on review.md_id=md.md_id WHERE store_id=${store_id}`);
         //console.log(review_result);
 
         //스토어 현재 진행중인 공동구매
