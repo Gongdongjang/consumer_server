@@ -121,7 +121,7 @@ router.post("/phone-check/verify", async (req, res) => {
     }
 
     res.send({phone_valid: phone_valid});
-  } catch (e) {
+  } catch (err) {
     console.error(err);
     res.status(500).send({msg: "server error"});
   }
