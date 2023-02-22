@@ -6,7 +6,7 @@ require("dotenv").config();
 
 router.post("/googleLogin", async (req, res, next) => {
 
-  const {id, username, nickname, sns_type /*, id_token, access_token*/} =
+  const {id, username, sns_type /*, id_token, access_token*/} =
     req.body;
   var resultCode = 404;
   var message = "에러가 발생했습니다";
@@ -19,7 +19,6 @@ router.post("/googleLogin", async (req, res, next) => {
       access_token = await jwt.sign(
         {
           id: id,
-          nickname: nickname,
           name: username,
         },
         process.env.jwt_secret,
@@ -45,8 +44,8 @@ router.post("/googleLogin", async (req, res, next) => {
       });
 
       let data2 = await pool.query(
-        "INSERT INTO user (user_id, user_name, nickname, sns_type, refresh_token) VALUES (?, ?, ?, ?, ?)",
-        [id, username, nickname, sns_type, refresh_token]
+        "INSERT INTO user (user_id, user_name, sns_type, refresh_token) VALUES (?, ?, ?, ?)",
+        [id, username, sns_type, refresh_token]
       );
       resultCode = 200;
       message = "구글 계정 회원가입 성공!";
@@ -97,7 +96,6 @@ router.get("/refresh", async (req, res) => {
       const access_token = await jwt.sign(
         {
           id: user[0].user_id,
-          nickname: user[0].nickname,
           name: user[0].user_name,
         },
         process.env.jwt_secret,
