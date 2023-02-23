@@ -17,7 +17,7 @@ router.post("/", async (req, res, next) => {
 
   let sql1, sql2, sql3;
   //first_time 이 yes이면 insert문
-  if(first_time="yes"){
+  if(first_time == "yes"){
     sql1="INSERT INTO address_user (userno, loc1, standard_address) VALUES (?,?,?)" ;
     sql2="INSERT INTO address_user (userno, loc1, loc2, standard_address) VALUES (?, ?, ?, ?)" ;
     sql3="INSERT INTO address_user (userno, loc1, loc2, loc3, standard_address) VALUES (?, ?, ?, ?, ?)" ;
@@ -33,14 +33,14 @@ router.post("/", async (req, res, next) => {
     //console.log(userno);
 
     let param1, param2, param3;
-    if(first_time="yes"){
-      param1=[userno,address[0],address[1],address[0]];
-      param2=[userno,address[0],address[1],address[2],address[0]];
-      param3=[userno,address[0],address[1],address[2],address[3],address[0]];
-    } else{   //first_time이 no
-      param1=[address[0],address[1],address[0],userno];
-      param2=[address[0],address[1],address[2],address[0],userno];
-      param3=[address[0],address[1],address[2],address[3],address[0],userno];
+    if(first_time == "yes"){
+      param1=[userno,address[0],address[0]];
+      param2=[userno,address[0],address[1],address[0]];
+      param3=[userno,address[0],address[1],address[2],address[0]];
+    } else{   //first_time이 no //근데 현재위치를 기준주소로 설정하면 어떻게 할까..?
+      param1=[address[0],address[0],userno];
+      param2=[address[0],address[1],address[0],userno];
+      param3=[address[0],address[1],address[2],address[0],userno];
     }
 
     let sql;
