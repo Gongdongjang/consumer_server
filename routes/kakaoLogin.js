@@ -5,7 +5,7 @@ const router = express.Router();
 router.post("/kakaoLogin", async (req, res, next) => {
   const {id, username, sns_type, refresh_token} =
     req.body;
-  const sql =
+  sql =
     "INSERT INTO user (user_id, user_name, sns_type, refresh_token) VALUES (?, ?, ?, ?)";
     const param = [id, username, sns_type, refresh_token];
 
@@ -14,9 +14,10 @@ router.post("/kakaoLogin", async (req, res, next) => {
   let message = "에러가 발생했습니다.";
 
   try {
-    const data = await pool.query("SELECT * FROM user WHERE user_id = ?", [id]);
+    let data = await pool.query("SELECT * FROM user WHERE user_id = ?", [id]);
     if (data[0][0] == undefined) {
       data = await pool.query(sql, param);
+      console.log(data)
       resultCode = 200;
       message = "카카오 계정 회원가입 성공!";
     } else {
