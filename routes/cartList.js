@@ -2,13 +2,13 @@ const pool = require("../db");
 const express = require("express");
 const router = express.Router();
 
-router.post("/cartListView", async (req, res, next) => {
+router.post("/cartPost", async (req, res, next) => {
   const {user_id, md_id, store_id, pu_date, pu_time, purchase_num} = req.body;
   let resultCode = 404;
   let message = "에러가 발생했습니다.";
 
   try {
-    const [cart_list] = await pool.execute(
+    const [cart_post] = await pool.execute(
       `INSERT INTO cart (user_id, md_id, store_id, select_qty, cart_pu_date, cart_pu_time) VALUES (?, ?, ?, ?, ?, ?)`,
       [user_id, md_id, store_id, purchase_num, pu_date, pu_time]
     );
@@ -17,12 +17,20 @@ router.post("/cartListView", async (req, res, next) => {
 
     return res.json({
       code: resultCode,
-      message: message,
+      message: message
     });
   } catch (err) {
     console.error(err);
     return res.status(500).json(err);
   }
+});
+
+router.get("/cartList", async (req, res, next) => {
+
+});
+
+router.post("/cartList", async (req, res, next) => {
+
 });
 
 module.exports = router;
