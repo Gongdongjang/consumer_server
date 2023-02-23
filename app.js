@@ -58,7 +58,9 @@ app.get("/mdView_main", mdViewMainRouter);
 
 app.post("/jointPurchase", jointPurchaseRouter);
 
-app.post("/cartListView", cartListRouter);
+app.post("/cartPost", cartListRouter);
+app.get("/cartList", cartListRouter);
+app.post("/cartList", cartListRouter);
 
 app.post("/isKeep", keepRouter);
 app.post("/keep", keepRouter);
