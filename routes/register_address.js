@@ -6,6 +6,7 @@ router.post("/", async (req, res, next) => {
 
   const userid=req.body.id;
   const addresslist=req.body.address.substring(1, req.body.address.length - 1); // [ ] 제거
+  const first_time=req.body.first_time;
 
   let address=addresslist.split(', ')
   const count=address.length;
@@ -14,19 +15,34 @@ router.post("/", async (req, res, next) => {
   let message = "에러가 발생했습니다.";
   let userno;
 
-  const sql1="INSERT INTO address_user (userno, loc1) VALUES (?,?)" ;
-  const sql2="INSERT INTO address_user (userno, loc1, loc2) VALUES (?, ?, ?)" ;
-  const sql3="INSERT INTO address_user (userno, loc1, loc2, loc3) VALUES (?, ?, ?, ?)" ;
+  let sql1, sql2, sql3;
+  //first_time 이 yes이면 insert문
+  if(first_time="yes"){
+    sql1="INSERT INTO address_user (userno, loc1, standard_address) VALUES (?,?,?)" ;
+    sql2="INSERT INTO address_user (userno, loc1, loc2, standard_address) VALUES (?, ?, ?, ?)" ;
+    sql3="INSERT INTO address_user (userno, loc1, loc2, loc3, standard_address) VALUES (?, ?, ?, ?, ?)" ;
+  } else{   //first_time이 no면 update문
+    sql1=`UPDATE address_user SET loc1 = ? , standard_address = ? WHERE userno = ?` ;
+    sql2=`UPDATE address_user SET loc1 = ? , loc2 = ? , standard_address = ? WHERE userno = ?` ;
+    sql3=`UPDATE address_user SET loc1 = ? , loc2 = ? , loc3 = ? ,standard_address = ? WHERE userno = ?` ;
+  }
 
   try {
     const u_data = await pool.query("SELECT user_no FROM user WHERE user_id=? ", [userid]);
     userno=u_data[0][0].user_no;
     //console.log(userno);
 
-    const param1=[userno,address[0],address[1]];
-    const param2=[userno,address[0],address[1],address[2]];
-    const param3=[userno,address[0],address[1],address[2],address[3]];
-  
+    let param1, param2, param3;
+    if(first_time="yes"){
+      param1=[userno,address[0],address[1],address[0]];
+      param2=[userno,address[0],address[1],address[2],address[0]];
+      param3=[userno,address[0],address[1],address[2],address[3],address[0]];
+    } else{   //first_time이 no
+      param1=[address[0],address[1],address[0],userno];
+      param2=[address[0],address[1],address[2],address[0],userno];
+      param3=[address[0],address[1],address[2],address[3],address[0],userno];
+    }
+
     let sql;
     let param;
   
