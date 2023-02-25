@@ -8,12 +8,29 @@ router.post("/cartPost", async (req, res, next) => {
   let message = "에러가 발생했습니다.";
 
   try {
-    const [cart_post] = await pool.execute(
-      `INSERT INTO cart (user_id, md_id, store_id, select_qty, cart_pu_date, cart_pu_time) VALUES (?, ?, ?, ?, ?, ?)`,
-      [user_id, md_id, store_id, purchase_num, pu_date, pu_time]
+    const [cart_result] = await pool.execute(
+      `SELECT COUNT(store_id) store_id FROM cart WHERE user_id = ? and md_id = ?`, [user_id, md_id]
     );
-    resultCode = 200;
-    message = "cartDetail 성공";
+
+    if (cart_result[0]["store_id"] == 0){
+      const [cart_post] = await pool.execute(
+        `INSERT INTO cart (user_id, md_id, store_id, select_qty, cart_pu_date, cart_pu_time) VALUES (?, ?, ?, ?, ?, ?)`,
+        [user_id, md_id, store_id, purchase_num, pu_date, pu_time]
+      );
+      resultCode = 200;
+      message = "cartDetail 성공";
+    }
+
+    else {
+      const [cart_post] = await pool.execute(
+        `UPDATE cart SET select_qty = select_qty + ? where user_id = ? and md_id = ?`,
+        [purchase_num, user_id, md_id]
+      );
+      console.log(cart_post);
+
+      resultCode = 200;
+      message = "cartDetail 성공";
+    }
 
     return res.json({
       code: resultCode,
