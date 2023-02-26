@@ -26,7 +26,6 @@ router.post("/cartPost", async (req, res, next) => {
         `UPDATE cart SET select_qty = select_qty + ? where user_id = ? and md_id = ?`,
         [purchase_num, user_id, md_id]
       );
-      console.log(cart_post);
 
       resultCode = 200;
       message = "cartDetail 성공";
@@ -43,12 +42,10 @@ router.post("/cartPost", async (req, res, next) => {
 });
 
 router.get("/cartList", async (req, res, next) => {
-  console.log(req.query);
   let user_id = req.query.user_id;
-  
   try {
     const [cart_detail] = await pool.execute(
-      `SELECT cart_id, user_id, select_qty, cart_pu_date, cart_pu_time, store_name, pay_price, md_name, pay_comp, mdimg_thumbnail FROM ggdjang.cart join store on ggdjang.cart.store_id = store.store_id join payment on payment.md_id = ggdjang.cart.md_id join md on ggdjang.cart.md_id = md.md_id join md_Img on md.md_id=md_Img.md_id WHERE ggdjang.cart.user_id = ${user_id}`
+      `SELECT user_id, cart.store_id, cart.md_id, stk_remain, select_qty, cart_pu_date, cart_pu_time, store_name, pay_price, md_name, pay_comp, mdimg_thumbnail from ggdjang.cart join store on ggdjang.cart.store_id = store.store_id join payment on payment.md_id = ggdjang.cart.md_id join md on ggdjang.cart.md_id = md.md_id join md_Img on md.md_id=md_Img.md_id join stock on md.md_id=stock.md_id WHERE ggdjang.cart.user_id = ${user_id}`
     );
 
     const [store_count] = await pool.execute(
@@ -61,7 +58,7 @@ router.get("/cartList", async (req, res, next) => {
       code: resultCode,
       message: message,
       cart_detail: cart_detail,
-      store_count: store_count
+      store_count: store_count,
     }); 
   } catch (err) {
     console.error(err);
@@ -77,6 +74,7 @@ router.post("/cartList", async (req, res, next) => {
   console.log(before_count, "<=>", after_count);
 
   try {
+    console.log("cart  post")
     // 선택한 것만 intent
 
     if (before_count == after_count){
@@ -111,6 +109,15 @@ router.post("/cartList", async (req, res, next) => {
     console.error(err);
     return res.status(500).json(err);
   }
+});
+
+router.get("/cartDelete", async (req, res, next) => {
+  let user_id = req.query.user_id;
+  let store_id = req.query.store_id;
+  let md_id = req.query.md_id;
+  const [cart_delete] = await pool.execute(
+    `DELETE FROM cart WHERE user_id=? and store_id=? and md_id=?`,[user_id, store_id, md_id]
+  );
 });
 
 module.exports = router;
