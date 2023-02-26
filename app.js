@@ -69,6 +69,8 @@ app.post("/keeplist", keeplistRouter);
 app.use("/payUserInfo", require("./routes/payUserInfo.js"));
 app.use("/orderInsert", require("./routes/orderInsert.js"));
 
+app.use("/notification", require("./routes/notification.js"));
+
 app.use(auth_middleware);
 
 app.listen(3000, function () {
