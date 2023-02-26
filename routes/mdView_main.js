@@ -9,27 +9,28 @@ router.get("/mdView_main", async (req, res, next) => {
   try {
     //md, payment, pickup, store, farm
     //홈화면 제품리스트-> store_loc 추가
-    //pu_start, pu_end 삭제함,,
+    //pu_end 삭제함
     //WHERE md_result is null or md_result=1 조건 추가함
     const [md_result] = await pool.execute(
-      "select md_result, md.md_id, mdimg_thumbnail, md_name, farm_name, store_name, store_loc from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id join md_Img on md.md_id = md_Img.md_id WHERE md_result is null or md_result=1 ORDER BY md.md_id desc"
+      `select md_result, md.md_id, mdimg_thumbnail, md_name, pu_start, farm_name, store_name, md_end, pay_price, store_loc from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id join md_Img on md.md_id = md_Img.md_id WHERE md_result is null or md_result=1 ORDER BY md.md_id desc`
     );
 
-    //console.log(md_result);
+    let count = md_result.length;
 
-    let count = await pool.query("SELECT COUNT(*) FROM md");
-    count = count[0][0]["COUNT(*)"];
-
-    // let pay_schedule = new Array();
     let pu_start = new Array();
-    let pu_end = new Array();
+    let md_end = new Array();
+    let dDay = new Array();
 
     for (let i = 0; i < count; i++) {
-      // pay_schedule[i] = new Date(
-      //   md_result[i].pay_schedule
-      // ).toLocaleDateString();
-      //pu_start[i] = new Date(md_result[i].pu_start).toLocaleDateString();
-      //pu_end[i] = new Date(md_result[i].pu_end).toLocaleDateString();
+      pu_start[i] = new Date(md_result[i].pu_start).toLocaleDateString();
+      // md_end[i] = new Date(md_result[i].md_end).toLocaleDateString();
+      dDay[i] =
+        new Date(md_result[i].md_end)
+          .toISOString()
+          .split("T")[0]
+          .replace(/-/g, "") -
+        new Date().toISOString().split("T")[0].replace(/-/g, "") +
+        1;
     }
 
     return res.json({
@@ -37,9 +38,9 @@ router.get("/mdView_main", async (req, res, next) => {
       message: message,
       count: count,
       md_result: md_result,
-      // pay_schedule: pay_schedule,
-      //pu_start: pu_start,
-      //pu_end: pu_end,
+      pu_start: pu_start,
+      // md_end: md_end,
+      dDay: dDay,
     });
   } catch (err) {
     console.error(err);

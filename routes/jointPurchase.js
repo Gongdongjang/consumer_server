@@ -19,7 +19,7 @@ router.post("/jointPurchase", async (req, res, next) => {
     //pay_price와 pay_comp 추가
     //store 위치정보 추가
     const [md_detail_result] = await pool.query(
-      "select mdimg_thumbnail, md_name, farm_name, stk_remain, stk_goal, pay_price, pay_comp, pu_start, pu_end, mdImg_detail, farm_farmer, farm_info, store.store_id, store_name, store_info, store_loc from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id join stock on md.md_id=stock.md_id join md_Img on md.md_id=md_Img.md_id where md.md_id = ?",
+      "select mdimg_thumbnail, md_name, md_end, farm_name, stk_remain, stk_goal, stk_total, pay_price, pay_comp, pu_start, pu_end, mdImg_detail, farm_farmer, farm_info, store.store_id, store_name, store_info, store_loc from md join farm on md.farm_id=farm.farm_id join payment on md.md_id=payment.md_id join pickup on md.md_id=pickup.md_id join store on pickup.store_id=store.store_id join stock on md.md_id=stock.md_id join md_Img on md.md_id=md_Img.md_id where md.md_id = ?",
       md_id
     );
 
@@ -29,6 +29,15 @@ router.post("/jointPurchase", async (req, res, next) => {
     // let pay_schedule = new Date(md_detail_result[0].pay_schedule).toLocaleDateString();
     let pu_start = new Date(md_detail_result[0].pu_start).toLocaleDateString();
     let pu_end = new Date(md_detail_result[0].pu_end).toLocaleDateString();
+    let md_end = new Date(md_detail_result[0].md_end).toLocaleDateString();
+    
+    let dDay =
+      new Date(md_detail_result[0].md_end)
+        .toISOString()
+        .split("T")[0]
+        .replace(/-/g, "") -
+      new Date().toISOString().split("T")[0].replace(/-/g, "") +
+      1;
 
     return res.json({
       code: resultCode,
@@ -37,6 +46,8 @@ router.post("/jointPurchase", async (req, res, next) => {
       // pay_schedule:pay_schedule,
       pu_start: pu_start,
       pu_end: pu_end,
+      md_end: md_end,
+      dDay: dDay,
     });
   } catch (err) {
     console.error(err);
