@@ -9,11 +9,15 @@ router.get("/storeView", async (req, res, next) => {
   try {
     //문제 없으면 try문 실행
     const [store_result] = await pool.execute(
-      `SELECT * FROM store`
+      `SELECT * FROM store join pickup on store.store_id = pickup.store_id join md on pickup.md_id = md.md_id join payment on md.md_id = payment.md_id`
     );
 
-    let count = await pool.query("SELECT COUNT(*) FROM store");
-    count = count[0][0]["COUNT(*)"];
+    let count = store_result.length;
+
+    let pu_start = new Array();
+    for (let i = 0; i < store_result.length; i++) {
+      pu_start[i] = new Date(store_result[i].pu_start).toLocaleDateString();
+    }
 
     resultCode = 200;
     message = "storeView 성공";
@@ -25,6 +29,7 @@ router.get("/storeView", async (req, res, next) => {
       code: resultCode,
       message: message,
       count: count,
+      pu_start: pu_start,
       store_result: store_result,
     });
   } catch (err) {
