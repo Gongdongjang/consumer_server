@@ -21,12 +21,18 @@ router.post("/farmDetail", async (req, res, next) => {
 
     let pu_start = new Array();
     let pu_end = new Array();
-    // let pay_schedule = new Array();
+    let dDay = new Array();
 
     for (let i = 0; i < md_data.length; i++) {
       pu_start[i] = new Date(md_data[i].pu_start).toLocaleDateString();
       pu_end[i] = new Date(md_data[i].pu_end).toLocaleDateString();
-      // pay_schedule[i] = new Date(md_data[i].pay_schedule).toLocaleDateString();
+      dDay[i] =
+        new Date(md_data[i].md_end)
+          .toISOString()
+          .split("T")[0]
+          .replace(/-/g, "") -
+        new Date().toISOString().split("T")[0].replace(/-/g, "") +
+        1;
     }
 
     return res.json({
@@ -34,9 +40,9 @@ router.post("/farmDetail", async (req, res, next) => {
       message: message,
       farm_data: farm_data,
       md_data: md_data,
-      // pay_schedule: pay_schedule,
       pu_start: pu_start,
       pu_end: pu_end,
+      dDay: dDay,
     });
   } catch (err) {
     console.error(err);

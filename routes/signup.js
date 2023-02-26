@@ -12,16 +12,15 @@ const naver = {
 
 //회원가입
 router.post("/", async (req, res, next) => {
-  const {id, password, name, nickname, phone_number, push_allow} =
-    req.body;
+  const {id, password, name, phone_number} = req.body;
   const passwordBy = bcrypt.hashSync(password, 10); // sync
   var resultCode = 404;
   var message = "에러가 발생했습니다.";
   try {
     //문제 없으면 try문 실행
     const data = await pool.query(
-      "INSERT INTO user (user_id, password, user_name, nickname, mobile_no, push_allow) VALUES (?, ?, ?, ?, ?, ?)",
-      [id, passwordBy, name, nickname, phone_number, push_allow]
+      "INSERT INTO user (user_id, password, user_name, mobile_no) VALUES (?, ?, ?, ?)",
+      [id, passwordBy, name, phone_number]
     );
     resultCode = 200;
     message = "회원가입에 성공했습니다!";
@@ -36,24 +35,24 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-//id 중복확인
-router.post("/id-check", async (req, res) => {
-  const body = req.body;
-  const id = body.id;
-  let is_valid = true;
+// //id 중복확인
+// router.post("/id-check", async (req, res) => {
+//   const body = req.body;
+//   const id = body.id;
+//   let is_valid = true;
 
-  try {
-    const [result, field] = await pool.execute(
-      `SELECT * FROM user WHERE user_id = ?`,
-      [id]
-    );
-    // id가 이미 존재하면 is_valid 는 false
-    if (result.length !== 0) is_valid = false;
-    res.send({is_valid: is_valid});
-  } catch (e) {
-    res.status(500).send({msg: "server error"});
-  }
-});
+//   try {
+//     const [result, field] = await pool.execute(
+//       `SELECT * FROM user WHERE user_id = ?`,
+//       [id]
+//     );
+//     // id가 이미 존재하면 is_valid 는 false
+//     if (result.length !== 0) is_valid = false;
+//     res.send({is_valid: is_valid});
+//   } catch (e) {
+//     res.status(500).send({msg: "server error"});
+//   }
+// });
 
 // sms 인증
 function makeSignature(time) {
@@ -122,7 +121,7 @@ router.post("/phone-check/verify", async (req, res) => {
     }
 
     res.send({phone_valid: phone_valid});
-  } catch (e) {
+  } catch (err) {
     console.error(err);
     res.status(500).send({msg: "server error"});
   }
