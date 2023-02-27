@@ -6,7 +6,7 @@ router.post("/", async (req, res, next) => {
   let resultCode = 404;
   let message = "에러가 발생했습니다.";
 
-  let {user_id, md_id, store_id, select_qty, order_price, pu_date, pu_time} = req.body;
+  let {user_id, md_id, store_id, select_qty, order_price, pu_date, pu_time, order_name} = req.body;
   
   md_id=Number(md_id);
   store_id=Number(store_id);
@@ -15,11 +15,17 @@ router.post("/", async (req, res, next) => {
   const order_date=new Date();
   const order_pu_time=new Date(pu_date+" "+pu_time+":00");
 
+  //문제 없으면 try문 실행
   try {
-    //문제 없으면 try문 실행
+
+    //유저이름 찾기
+    const u_data = await pool.query("SELECT user_name FROM user WHERE user_id=? ",[user_id]);
+    user_name = u_data[0][0].user_name;
+
+    //order테이블에 값 insert
     const [order_insert] = await pool.execute(
-      `INSERT INTO ggdjang.order (order_select_qty, order_pu_date, order_date, order_md_status, order_pu_time, order_price, user_id, md_id, store_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
-      [select_qty,order_pu_date,order_date,"준비중",order_pu_time,order_price,user_id,md_id,store_id]
+      `INSERT INTO ggdjang.order (order_select_qty, order_pu_date, order_date, order_md_status, order_pu_time, order_price, user_id, md_id, store_id, user_name, order_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+      [select_qty,order_pu_date,order_date,"준비중",order_pu_time,order_price,user_id,md_id,store_id,user_name,order_name]
     );
     resultCode = 200;
     message = "orderInsert 성공";

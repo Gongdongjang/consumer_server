@@ -17,7 +17,7 @@ router.post("/", async (req, res, next) => {
 
     //문제 없으면 try문 실행
     const [address_result] = await pool.execute(
-      `SELECT loc1, loc2, loc3 FROM address_user WHERE userno=${userno}`
+      `SELECT loc0, loc1, loc2, loc3 FROM address_user WHERE userno=${userno}`
     );
 
     let address_count = 3;

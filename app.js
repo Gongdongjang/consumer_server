@@ -61,6 +61,8 @@ app.post("/jointPurchase", jointPurchaseRouter);
 app.post("/cartPost", cartListRouter);
 app.get("/cartList", cartListRouter);
 app.post("/cartList", cartListRouter);
+app.get("/cartDelete", cartListRouter);
+app.get("/cartChecked", cartListRouter);
 
 app.post("/isKeep", keepRouter);
 app.post("/keep", keepRouter);
@@ -68,6 +70,9 @@ app.post("/keeplist", keeplistRouter);
 
 app.use("/payUserInfo", require("./routes/payUserInfo.js"));
 app.use("/orderInsert", require("./routes/orderInsert.js"));
+app.use("/orderCancel", require("./routes/orderCancel.js"));
+
+app.use("/notification", require("./routes/notification.js"));
 
 app.use(auth_middleware);
 
