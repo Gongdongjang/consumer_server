@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-var bodyParser = require("body-parser");
+let bodyParser = require("body-parser");
 const loginRouter = require("./routes/login.js");
 const signupRouter = require("./routes/signup.js");
 const googleLoginRouter = require("./routes/googleLogin.js");
@@ -14,8 +14,10 @@ const logoutRouter = require("./routes/logout");
 const addressRouter = require("./routes/register_address.js");
 const jointPurchaseRouter = require("./routes/jointPurchase.js");
 const keepRouter = require("./routes/keep.js");
+const keeplistRouter = require("./routes/keeplist.js");
 const orderDetailRouter = require("./routes/orderDetail");
 const orderDetailMdRouter = require("./routes/orderDetailMd");
+const cartListRouter = require("./routes/cartList");
 
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
@@ -33,6 +35,8 @@ app.get("/post_search", (req, res) => {
 
 app.use("/signup", signupRouter);
 app.use("/register_address", addressRouter);
+app.use("/get_address", require("./routes/get_address.js"));
+app.use("/standard_address", require("./routes/standard_address.js"));
 
 app.post("/kakaoLogin", kakaoLoginRouter);
 app.post("/googleLogin", googleLoginRouter);
@@ -54,8 +58,21 @@ app.get("/mdView_main", mdViewMainRouter);
 
 app.post("/jointPurchase", jointPurchaseRouter);
 
+app.post("/cartPost", cartListRouter);
+app.get("/cartList", cartListRouter);
+app.get("/cartUpdate", cartListRouter);
+app.get("/cartDelete", cartListRouter);
+app.get("/cartChecked", cartListRouter);
+
 app.post("/isKeep", keepRouter);
 app.post("/keep", keepRouter);
+app.post("/keeplist", keeplistRouter);
+
+app.use("/payUserInfo", require("./routes/payUserInfo.js"));
+app.use("/orderInsert", require("./routes/orderInsert.js"));
+app.use("/orderCancel", require("./routes/orderCancel.js"));
+
+app.use("/notification", require("./routes/notification.js"));
 
 app.use(auth_middleware);
 
