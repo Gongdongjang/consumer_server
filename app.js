@@ -60,7 +60,7 @@ app.post("/jointPurchase", jointPurchaseRouter);
 
 app.post("/cartPost", cartListRouter);
 app.get("/cartList", cartListRouter);
-app.post("/cartList", cartListRouter);
+app.get("/cartUpdate", cartListRouter);
 app.get("/cartDelete", cartListRouter);
 app.get("/cartChecked", cartListRouter);
 
