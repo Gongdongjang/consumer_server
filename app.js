@@ -69,6 +69,7 @@ app.post("/keeplist", keeplistRouter);
 
 app.use("/payUserInfo", require("./routes/payUserInfo.js"));
 app.use("/orderInsert", require("./routes/orderInsert.js"));
+app.use("/orderCancel", require("./routes/orderCancel.js"));
 
 app.use("/notification", require("./routes/notification.js"));
 
