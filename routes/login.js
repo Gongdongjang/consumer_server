@@ -18,11 +18,23 @@ router.post("/login", async (req, res, next) => {
       resultCode = 206;
       message = "존재하지 않는 계정입니다!";
       access_token = "id_false";
+      return res.json({
+        code: resultCode,
+        message: message,
+        id: id,
+        access_token: access_token,
+      });
     } else if (!bcrypt.compareSync(password, data[0][0].password)) {
       // 비밀번호가 다르다면
       resultCode = 204;
       message = "비밀번호가 틀렸습니다!";
       access_token = "pwd_false";
+      return res.json({
+        code: resultCode,
+        message: message,
+        id: id,
+        access_token: access_token,
+      });
     } else {
       // 다른 경우는 없다고 판단하여 성공
       resultCode = 200;
@@ -31,7 +43,6 @@ router.post("/login", async (req, res, next) => {
       const access_token = await jwt.sign(
         {
           id: data[0][0].user_id,
-          nickname: data[0][0].nickname,
           name: data[0][0].user_name,
         },
         process.env.jwt_secret,
@@ -60,7 +71,6 @@ router.post("/login", async (req, res, next) => {
         `UPDATE user SET refresh_token = ? where user_id = ?`,
         [refresh_token, id]
       );
-
       return res.json({
         code: resultCode,
         message: message,
