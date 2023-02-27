@@ -30,7 +30,6 @@ router.post("/", async (req, res, next) => {
   try {
     const u_data = await pool.query("SELECT user_no FROM user WHERE user_id=? ", [userid]);
     userno=u_data[0][0].user_no;
-    //console.log(userno);
 
     let param1, param2, param3;
     if(first_time == "yes"){

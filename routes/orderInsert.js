@@ -15,8 +15,6 @@ router.post("/", async (req, res, next) => {
   const order_date=new Date();
   const order_pu_time=new Date(pu_date+" "+pu_time+":00");
 
-  //console.log(order_date,order_pu_date,order_pu_time);
-
   try {
     //문제 없으면 try문 실행
     const [order_insert] = await pool.execute(

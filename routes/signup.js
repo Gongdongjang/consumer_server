@@ -4,11 +4,6 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 const CryptoJS = require("crypto-js");
-const naver = {
-  id: "ncp:sms:kr:286992432251:ggdjang",
-  console_secret: "LuPOlQ3q6em8ogtUwUpYNwCRCmfkDgaXTOkza9e8",
-  access: "hBMU8Fn5CS2UYMptF749",
-};
 
 //회원가입
 router.post("/", async (req, res, next) => {
@@ -23,7 +18,7 @@ router.post("/", async (req, res, next) => {
       [id, passwordBy, name, phone_number]
     );
     resultCode = 200;
-    message = "회원가입에 성공했습니다!";
+    message = name + "님, 회원가입에 성공했습니다!";
     return res.json({
       code: resultCode,
       message: message,
@@ -35,34 +30,15 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// //id 중복확인
-// router.post("/id-check", async (req, res) => {
-//   const body = req.body;
-//   const id = body.id;
-//   let is_valid = true;
-
-//   try {
-//     const [result, field] = await pool.execute(
-//       `SELECT * FROM user WHERE user_id = ?`,
-//       [id]
-//     );
-//     // id가 이미 존재하면 is_valid 는 false
-//     if (result.length !== 0) is_valid = false;
-//     res.send({is_valid: is_valid});
-//   } catch (e) {
-//     res.status(500).send({msg: "server error"});
-//   }
-// });
-
 // sms 인증
 function makeSignature(time) {
   var space = " "; // one space
   var newLine = "\n"; // new line
   var method = "POST"; // method
-  var url = `/sms/v2/services/${naver.id}/messages`; // url (include query string)
+  var url = `/sms/v2/services/${process.env.naver_id}/messages`; // url (include query string)
   var timestamp = time; // current timestamp (epoch)
-  var accessKey = naver.access; // access key id (from portal or Sub Account)
-  var secretKey = naver.console_secret; // secret key (from portal or Sub Account)
+  var accessKey = process.env.naver_access; // access key id (from portal or Sub Account)
+  var secretKey = process.env.naver_console_secret; // secret key (from portal or Sub Account)
 
   var hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
   hmac.update(method);
@@ -82,7 +58,7 @@ router.post("/phone-check", async (req, res) => {
   const body = req.body;
   const phone_number = body.phone_number;
 
-  const sms_url = `https://sens.apigw.ntruss.com/sms/v2/services/${naver.id}/messages`;
+  const sms_url = `https://sens.apigw.ntruss.com/sms/v2/services/${process.env.naver_id}/messages`;
   const time_stamp = Date.now().toString();
   const signature = makeSignature(time_stamp);
   let code = "";

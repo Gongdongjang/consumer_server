@@ -100,7 +100,6 @@ const get_cookies = (req) => {
 // access_token 만료 -> refresh token 을 이용해 재발급
 router.get("/refresh", async (req, res) => {
   let refresh_token = get_cookies(req);
-  console.log("91행");
 
   if (refresh_token === undefined) {
     res.sendStatus(400);
