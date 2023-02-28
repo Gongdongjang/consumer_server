@@ -71,10 +71,6 @@ router.get("/cartUpdate", async (req, res, next) => {
   let user_id = req.query.user_id;
   let store_id = req.query.store_id;
   let md_id = req.query.md_id;
-  console.log(select_qty);
-  console.log(user_id);
-  console.log(store_id);
-  console.log(md_id);
   try {
     const [cart_update] = await pool.execute(
       `UPDATE cart SET select_qty = ${select_qty} WHERE user_id = ${user_id} and store_id = ${store_id} and md_id = ${md_id};`
@@ -82,7 +78,6 @@ router.get("/cartUpdate", async (req, res, next) => {
     )
     resultCode = 200;
     message = "cart_update 성공";
-    console.log(cart_update);
     
     return res.json({
       code: resultCode,
