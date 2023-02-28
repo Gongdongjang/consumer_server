@@ -9,6 +9,7 @@ router.post("/login", async (req, res, next) => {
   const {id, password} = req.body;
   let resultCode = 404;
   let message = "에러가 발생했습니다";
+  let first_login;
 
   try {
     //문제 없으면 try문 실행
@@ -39,6 +40,9 @@ router.post("/login", async (req, res, next) => {
       // 다른 경우는 없다고 판단하여 성공
       resultCode = 200;
       message = "로그인 성공! " + data[0][0].user_name + "님 환영합니다!";
+
+      first_login = data[0][0].first_login;
+
 
       const access_token = await jwt.sign(
         {
@@ -75,6 +79,7 @@ router.post("/login", async (req, res, next) => {
         code: resultCode,
         message: message,
         id: id,
+        first_login: first_login, //최초 로그인인지 확인
         access_token: access_token,
         refresh_token: refresh_token,
       });
