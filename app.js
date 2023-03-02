@@ -80,6 +80,10 @@ app.use("/orderCancel", require("./routes/orderCancel.js"));
 
 app.use("/notification", require("./routes/notification.js"));
 
+//알람
+app.use("/alarm_token", require("./routes/alarm_token.js"));
+
+
 app.use(auth_middleware);
 
 app.listen(3000, function () {
