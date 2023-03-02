@@ -13,7 +13,7 @@ router.post("/farmDetail", async (req, res, next) => {
     );
 
     const [md_data] = await pool.execute(
-      `SELECT * FROM md join payment on md.md_id = payment.md_id join pickup on md.md_id = pickup.md_id join store on pickup.store_id = store.store_id join md_Img on md.md_id = md_Img.md_id where md.farm_id = ?`,
+      `SELECT * FROM md join payment on md.md_id = payment.md_id join pickup on md.md_id = pickup.md_id join store on pickup.store_id = store.store_id join md_Img on md.md_id = md_Img.md_id join farm on md.farm_id = farm.farm_id where md.farm_id = ?`,
       [farm_id]
     );
     resultCode = 200;
