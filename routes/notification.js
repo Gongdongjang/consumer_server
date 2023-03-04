@@ -22,8 +22,6 @@ router.post("/", async (req, res, next) => {
       `
     );
 
-    console.log(noti_result);
-
     // const [notification_person] = await pool.execute(
     //   `SELECT notification_id FROM notification_by_user WHERE notification_user=${userno}`
     // );
