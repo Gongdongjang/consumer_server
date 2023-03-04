@@ -31,13 +31,11 @@ router.post("/jointPurchase", async (req, res, next) => {
     let pu_end = new Date(md_detail_result[0].pu_end).toLocaleDateString();
     let md_end = new Date(md_detail_result[0].md_end).toLocaleDateString();
 
-    let dDay =
-      new Date(md_detail_result[0].md_end)
-        .toISOString()
-        .split("T")[0]
-        .replace(/-/g, "") -
-      new Date().toISOString().split("T")[0].replace(/-/g, "") +
-      1;
+    let now = new Date();
+    let distance = md_detail_result[0].md_end.getTime() - now.getTime();
+
+    const dDay = Math.floor(distance / (1000 * 60 * 60 * 24));
+    console.log(dDay);
 
     return res.json({
       code: resultCode,

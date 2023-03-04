@@ -48,17 +48,14 @@ router.post("/storeDetail", async (req, res, next) => {
     let pu_start = new Array();
     let pu_end = new Array();
     let dDay = new Array();
+    let now = new Date();
 
     for (let i = 0; i < md_data.length; i++) {
       pu_start[i] = new Date(md_data[i].pu_start).toLocaleDateString();
       pu_end[i] = new Date(md_data[i].pu_end).toLocaleDateString();
-      dDay[i] =
-        new Date(md_data[i].md_end)
-          .toISOString()
-          .split("T")[0]
-          .replace(/-/g, "") -
-        new Date().toISOString().split("T")[0].replace(/-/g, "") +
-        1;
+
+      let distance = md_data[i].md_end.getTime() - now.getTime();
+      dDay[i] = Math.floor(distance / (1000 * 60 * 60 * 24));
     }
 
     return res.json({

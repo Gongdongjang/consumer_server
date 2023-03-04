@@ -18,19 +18,15 @@ router.get("/mdView_main", async (req, res, next) => {
     let count = md_result.length;
 
     let pu_start = new Array();
-    let md_end = new Array();
+    // let md_end = new Array();
     let dDay = new Array();
+    let now = new Date();
 
     for (let i = 0; i < count; i++) {
       pu_start[i] = new Date(md_result[i].pu_start).toLocaleDateString();
       // md_end[i] = new Date(md_result[i].md_end).toLocaleDateString();
-      dDay[i] =
-        new Date(md_result[i].md_end)
-          .toISOString()
-          .split("T")[0]
-          .replace(/-/g, "") -
-        new Date().toISOString().split("T")[0].replace(/-/g, "") +
-        1;
+      let distance = md_result[i].md_end.getTime() - now.getTime();
+      dDay[i] = Math.floor(distance / (1000 * 60 * 60 * 24));
     }
 
     return res.json({
