@@ -35,7 +35,6 @@ router.post("/jointPurchase", async (req, res, next) => {
     let distance = md_detail_result[0].md_end.getTime() - now.getTime();
 
     const dDay = Math.floor(distance / (1000 * 60 * 60 * 24));
-    console.log(dDay);
 
     return res.json({
       code: resultCode,
