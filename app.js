@@ -79,6 +79,7 @@ app.use("/orderInsert", require("./routes/orderInsert.js"));
 app.use("/orderCancel", require("./routes/orderCancel.js"));
 
 app.use("/notification", require("./routes/notification.js"));
+app.use("/notification_pudate", require("./routes/notification_pudate.js"));
 
 //알람
 app.use("/alarm_token", require("./routes/alarm_token.js"));
