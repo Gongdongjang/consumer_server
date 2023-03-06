@@ -128,7 +128,7 @@ scheduler.scheduleJob('0 * * * *', async () => {
             console.log(msgResult);
         }
 
-        await db.execute(`UPDATE notification_by_user SET status = ? WHERE notification_id = ?`, ['SENT', notificationId]);
+        await pool.execute(`UPDATE notification_by_user SET status = ? WHERE notification_id = ?`, ['SENT', notificationId]);
     }
 })
 
