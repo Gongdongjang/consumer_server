@@ -22,7 +22,7 @@ router.post("/farmDetail", async (req, res, next) => {
     let pu_start = new Array();
     let pu_end = new Array();
     let dDay = new Array();
-    let now = new Date();
+    let now = new Date();                         
 
     for (let i = 0; i < md_data.length; i++) {
       pu_start[i] = new Date(md_data[i].pu_start).toLocaleDateString();
