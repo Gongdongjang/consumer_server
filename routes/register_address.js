@@ -10,7 +10,13 @@ router.post("/", async (req, res, next) => {
   const currentAddr=req.body.currentAddr;
 
   let address=addresslist.split(', ')
-  const count=address.length;
+  let count=address.length;
+
+  //주소 수정안하고 주소저장했을때
+  if (address==''){
+    console.log("값수정x:", count);
+    count=0;
+  }
 
   let resultCode = 404;
   let message = "에러가 발생했습니다.";
