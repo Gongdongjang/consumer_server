@@ -49,8 +49,8 @@ const createPickUpMessage = async (title, content, userno, date) => {
             await pool.execute(`INSERT INTO notification_by_user (notification_user, notification_id, status) VALUES (?, ?, ?)`,
             [userno, result.insertId, 'SCHEDULED']);
 
-        //res.send({msg: "NOTIFICATION_RESERVE_SUCCESS"});
-        //}
+            res.send({msg: "NOTIFICATION_RESERVE_SUCCESS"});
+       // }
         } catch (e) {
             console.log(e);
         }
@@ -112,35 +112,4 @@ router.post('/push', async (req, res) => {
 
 })
 
-//예약된 알림 보내기
-scheduler.scheduleJob('0 * * * *', async () => {
-    const [notifications, field] = await pool.execute(`SELECT notification_id, notification_user, notification_target, notification_title, notification_content FROM notification 
-                                                                  WHERE notification_push_type = ? AND notification_date BETWEEN NOW() and NOW() + INTERVAL 5 MINUTE`, ['예약']);
-
-    for (const notification of notifications) {
-        const notificationId = notification.notification_id;
-        const target = notification.notification_target;
-        const title = notification.notification_title;
-        const userno = notification.notification_user;
-        const content = notification.notification_content;
-
-        const [users, fields] = await pool.execute(`SELECT notification_user FROM notification_by_user WHERE notification_id = ?`, [notificationId]);
-        let userIds = [];
-        for (let user of users) {
-            userIds.push(user.notification_user);
-        }
-
-        if (target === '개인') {
-            const u_data = await pool.query("SELECT fcm_token FROM user WHERE user_no=? ",[userno]);
-            let token= u_data[0][0].fcm_token;
-
-            const message = createTokenMessage(token, title, content);
-            const msgResult = await firebase.messaging().sendMulticast(message);
-            console.log(msgResult);
-        }
-
-        await pool.execute(`UPDATE notification_by_user SET status = ? WHERE notification_id = ?`, ['SENT', notificationId]);
-    }
-})
-
-module.exports = router;
+module.exports = router; 
