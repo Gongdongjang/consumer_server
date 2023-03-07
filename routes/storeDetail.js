@@ -24,7 +24,7 @@ router.post("/storeDetail", async (req, res, next) => {
 
     //스토어 상세정보
     const [store_result] = await pool.execute(
-      `SELECT store_name, store_info, store_loc, store_phone FROM store WHERE store_id= ${store_id}`
+      `SELECT * FROM store WHERE store_id= ${store_id}`
     );
 
     //스토어에 있는 제품리뷰
@@ -34,7 +34,7 @@ router.post("/storeDetail", async (req, res, next) => {
 
     //스토어 현재 진행중인 공동구매
     const [md_data] = await pool.execute(
-      `SELECT * FROM md join payment on md.md_id = payment.md_id join pickup on md.md_id = pickup.md_id join store on pickup.store_id = store.store_id join farm on md.farm_id=farm.farm_id where pickup.store_id =${store_id}`
+      `SELECT * FROM md join payment on md.md_id = payment.md_id join pickup on md.md_id = pickup.md_id join md_Img on md.md_id = md_Img.md_id join store on pickup.store_id = store.store_id join farm on md.farm_id=farm.farm_id where pickup.store_id =${store_id}`
     );
 
     //스토어 운영 시간
@@ -48,17 +48,14 @@ router.post("/storeDetail", async (req, res, next) => {
     let pu_start = new Array();
     let pu_end = new Array();
     let dDay = new Array();
+    let now = new Date();
 
     for (let i = 0; i < md_data.length; i++) {
       pu_start[i] = new Date(md_data[i].pu_start).toLocaleDateString();
       pu_end[i] = new Date(md_data[i].pu_end).toLocaleDateString();
-      dDay[i] =
-        new Date(md_data[i].md_end)
-          .toISOString()
-          .split("T")[0]
-          .replace(/-/g, "") -
-        new Date().toISOString().split("T")[0].replace(/-/g, "") +
-        1;
+
+      let distance = md_data[i].md_end.getTime() - now.getTime();
+      dDay[i] = Math.floor(distance / (1000 * 60 * 60 * 24));
     }
 
     return res.json({

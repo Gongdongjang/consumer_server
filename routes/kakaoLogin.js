@@ -11,6 +11,7 @@ router.post("/kakaoLogin", async (req, res, next) => {
 
   let resultCode = 404;
   let message = "에러가 발생했습니다.";
+  let first_login;
 
   try {
     let data = await pool.query("SELECT * FROM user WHERE user_id = ?", [id]);
@@ -18,14 +19,17 @@ router.post("/kakaoLogin", async (req, res, next) => {
       data = await pool.query(sql, param);
       resultCode = 200;
       message = "카카오 계정 회원가입 성공!";
+      first_login= "0";
     } else {
       resultCode = 200;
       message = data[0][0].user_name + "님 환영합니다!";
+      first_login= data[0][0].first_login;
     }
     res.json({
       code: resultCode,
       message: message,
       id: id,
+      first_login: first_login
     });
   } catch (err) {
     console.error(err);

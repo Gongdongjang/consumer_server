@@ -36,6 +36,9 @@ router.post("/", async (req, res, next) => {
     const stock_total= await pool.execute(`UPDATE stock SET stk_total=stk_total+${select_qty} WHERE md_id=${md_id}`);
     // stk_total = select sum(order_select_qty) from `order` join md on md.md_id = `order`.md_id where md.md_id = 5;
 
+    //장바구니 리스트 삭제하기
+    const cart_delete= await pool.execute(`DELETE FROM cart WHERE user_id = ${user_id} and store_id = ${store_id} and md_id=${md_id}`);
+
     //order_id 보내기
     const [order_id] = await pool.execute(
       `SELECT LAST_INSERT_ID() FROM ggdjang.order WHERE user_id = ${user_id}`

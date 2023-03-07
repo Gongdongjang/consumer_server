@@ -10,7 +10,7 @@ router.post("/googleLogin", async (req, res, next) => {
     req.body;
   var resultCode = 404;
   var message = "에러가 발생했습니다";
-  let refresh_token, access_token;
+  let refresh_token, access_token, first_login;
 
   try {
     let data = await pool.query("SELECT * FROM user WHERE user_id = ?", [id]);
@@ -49,14 +49,17 @@ router.post("/googleLogin", async (req, res, next) => {
       );
       resultCode = 200;
       message = "구글 계정 회원가입 성공!";
-    } else {
+      first_login= "0";
+    } else {  //로그인
       resultCode = 200;
       message = data[0][0].user_name + "님 환영합니다!";
+      first_login= data[0][0].first_login;
     }
     return res.json({
       code: resultCode,
       message: message,
       id: id,
+      first_login: first_login, //최초 로그인인지 확인
       access_token: access_token,
       refresh_token: refresh_token,
     });

@@ -10,7 +10,13 @@ router.post("/", async (req, res, next) => {
   const currentAddr=req.body.currentAddr;
 
   let address=addresslist.split(', ')
-  const count=address.length;
+  let count=address.length;
+
+  //주소 수정안하고 주소저장했을때
+  if (address==''){
+    console.log("값수정x:", count);
+    count=0;
+  }
 
   let resultCode = 404;
   let message = "에러가 발생했습니다.";
@@ -40,6 +46,9 @@ router.post("/", async (req, res, next) => {
       param1=[userno,currentAddr,address[0],currentAddr];
       param2=[userno,currentAddr,address[0],address[1],currentAddr];
       param3=[userno,currentAddr,address[0],address[1],address[2],currentAddr];
+    
+      //최초 로그인 했을 시 first_login 값 1로 바꿔주기
+      const first_time = await pool.query(`UPDATE user SET first_login = 1 WHERE user_no = ?`, [userno]);
 
     } else{   //first_time이 no //근데 현재위치를 기준주소로 설정하면 어떻게 할까..?
       //주소변경했을 때 DB에 있는 standard_address 값 가져와서 넣어줘야함. 안그러면 수정 전 버전이 standard_address에 설정되어있을수도...

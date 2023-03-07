@@ -10,7 +10,12 @@ router.post("/", async (req, res, next) => {
   try {
     //문제 없으면 try문 실행
     const [order_detail] = await pool.execute(
-      `SELECT order_id, order_select_qty, order_pu_date, order_md_status, store_name, store_loc, pay_price, md_name FROM ggdjang.order join store on ggdjang.order.store_id = store.store_id join payment on payment.md_id = ggdjang.order.md_id join md on ggdjang.order.md_id = md.md_id WHERE ggdjang.order.user_id = ${user_id}`
+      `SELECT * FROM ggdjang.order join store on ggdjang.order.store_id = store.store_id join payment on payment.md_id = ggdjang.order.md_id join md on ggdjang.order.md_id = md.md_id join md_Img on md_Img.md_id = md.md_id WHERE order.order_cancel = 0 and ggdjang.order.user_id = ${user_id}`
+    );
+    
+    const [order_cancel] = await pool.execute(
+      `SELECT order_id, order_select_qty, order_pu_date, order_md_status, store_name, store_loc, pay_price, mdimg_thumbnail, md_name FROM ggdjang.order join store on ggdjang.order.store_id = store.store_id join payment on payment.md_id = ggdjang.order.md_id join md on ggdjang.order.md_id = md.md_id join md_Img on md.md_id=md_Img.md_id WHERE order.order_cancel = 1 and ggdjang.order.user_id = ${user_id}`
+
     );
 
     let pu_date = new Array();
@@ -29,6 +34,7 @@ router.post("/", async (req, res, next) => {
       message: message,
       order_detail: order_detail,
       pu_date: pu_date,
+      order_cancel: order_cancel,
     });
   } catch (err) {
     console.error(err);
