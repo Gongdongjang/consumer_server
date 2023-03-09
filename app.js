@@ -38,6 +38,7 @@ app.get("/post_search", (req, res) => {
 app.use("/signup", signupRouter);
 app.use("/register_address", addressRouter);
 app.use("/get_address", require("./routes/get_address.js"));
+app.use("/delete_address", require("./routes/delete_address.js"));
 app.use("/standard_address", require("./routes/standard_address.js"));
 
 app.post("/kakaoLogin", kakaoLoginRouter);
