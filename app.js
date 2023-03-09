@@ -20,6 +20,7 @@ const orderDetailMdRouter = require("./routes/orderDetailMd");
 const cartListRouter = require("./routes/cartList");
 const mypageRouter = require("./routes/mypage");
 const noticeRouter = require("./routes/notice");
+const reviewRegisterRouter = require("./routes/reviewRegister");
 
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
@@ -85,6 +86,8 @@ app.use("/notification_pudate", require("./routes/notification_pudate.js"));
 //알람
 app.use("/alarm_token", require("./routes/alarm_token.js"));
 
+//리뷰
+app.use("/review", reviewRegisterRouter);
 
 app.use(auth_middleware);
 
