@@ -5,10 +5,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 // logout
-router.post("/logout", async (req, res) => {
+router.get("/logout", async (req, res) => {
   res.clearCookie("access_token");
   res.clearCookie("refresh_token");
   res.send();
+  console.log("로그아웃")
 });
 
 module.exports = router;
