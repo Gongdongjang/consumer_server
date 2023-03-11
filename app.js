@@ -21,6 +21,7 @@ const cartListRouter = require("./routes/cartList");
 const mypageRouter = require("./routes/mypage");
 const noticeRouter = require("./routes/notice");
 const reviewRegisterRouter = require("./routes/reviewRegister");
+const reviewListRouter = require("./routes/reviewList");
 
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
@@ -88,6 +89,7 @@ app.use("/alarm_token", require("./routes/alarm_token.js"));
 
 //리뷰
 app.use("/review", reviewRegisterRouter);
+app.use("/reviewList", reviewListRouter);
 
 app.use(auth_middleware);
 
