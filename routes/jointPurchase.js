@@ -23,6 +23,10 @@ router.post("/jointPurchase", async (req, res, next) => {
       md_id
     );
 
+    const [review_data] = await pool.query(
+      `SELECT review.order_id, rvw_rating, rvw_content, rvw_img1, rvw_img2, rvw_img3, md_name, store_name, mdimg_thumbnail, order_select_qty, pay_price FROM md join review on review.md_id = md.md_id join store on store.store_id = review.store_id join md_Img on md_Img.md_id = review.md_id join ggdjang.order on ggdjang.order.order_id = review.order_id join payment on payment.md_id = review.md_id WHERE md.md_id = ${md_id}`
+    );
+
     resultCode = 200;
     message = "제품 상세로 정보보내기 성공";
 
@@ -40,11 +44,11 @@ router.post("/jointPurchase", async (req, res, next) => {
       code: resultCode,
       message: message,
       md_detail_result: md_detail_result,
-      // pay_schedule:pay_schedule,
       pu_start: pu_start,
       pu_end: pu_end,
       md_end: md_end,
       dDay: dDay,
+      review_data: review_data,
     });
   } catch (err) {
     console.error(err);
