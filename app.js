@@ -22,6 +22,7 @@ const mypageRouter = require("./routes/mypage");
 const noticeRouter = require("./routes/notice");
 const reviewRegisterRouter = require("./routes/reviewRegister");
 const reviewListRouter = require("./routes/reviewList");
+const changeRouter = require("./routes/changeUserInfo");
 
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
@@ -74,6 +75,11 @@ app.post("/keep", keepRouter);
 app.post("/keeplist", keeplistRouter);
 
 app.get("/mypage", mypageRouter);
+
+app.get("/is_id_exist", changeRouter);
+app.get("/change_pw", changeRouter);
+app.get("/change_name", changeRouter);
+app.get("/change_phone", changeRouter);
 
 app.get("/notice", noticeRouter);
 
