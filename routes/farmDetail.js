@@ -18,7 +18,7 @@ router.post("/farmDetail", async (req, res, next) => {
     );
 
     const [review_data] = await pool.execute(
-      `SELECT review.order_id, rvw_rating, rvw_content, rvw_img1, rvw_img2, rvw_img3, md_name, store_name, mdimg_thumbnail, order_select_qty, pay_price FROM farm join md on farm.farm_id = md.farm_id join review on review.md_id = md.md_id join store on store.store_id = review.store_id join md_Img on md_Img.md_id = review.md_id join ggdjang.order on ggdjang.order.order_id = review.order_id join payment on payment.md_id = review.md_id WHERE farm.farm_id = ${farm_id}`
+      `SELECT review.order_id, order.user_name, order.user_id, rvw_rating, rvw_content, rvw_img1, rvw_img2, rvw_img3, md_name, store_name, mdimg_thumbnail, order_select_qty, pay_price FROM farm join md on farm.farm_id = md.farm_id join review on review.md_id = md.md_id join store on store.store_id = review.store_id join md_Img on md_Img.md_id = review.md_id join ggdjang.order on ggdjang.order.order_id = review.order_id join payment on payment.md_id = review.md_id WHERE farm.farm_id = ${farm_id}`
     );
 
     resultCode = 200;

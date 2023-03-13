@@ -6,7 +6,7 @@ const fs = require("fs");
 
 //받은 md_id에 대한 상세 데이터 return
 router.post("/jointPurchase", async (req, res, next) => {
-  const {md_id} = req.body;
+  const {user_id, md_id} = req.body;
   let resultCode = 404;
   let message = "에러가 발생했습니다.";
 
@@ -24,7 +24,7 @@ router.post("/jointPurchase", async (req, res, next) => {
     );
 
     const [review_data] = await pool.query(
-      `SELECT review.order_id, rvw_rating, rvw_content, rvw_img1, rvw_img2, rvw_img3, md_name, store_name, mdimg_thumbnail, order_select_qty, pay_price FROM md join review on review.md_id = md.md_id join store on store.store_id = review.store_id join md_Img on md_Img.md_id = review.md_id join ggdjang.order on ggdjang.order.order_id = review.order_id join payment on payment.md_id = review.md_id WHERE md.md_id = ${md_id}`
+      `SELECT review.order_id, rvw_rating, rvw_content, rvw_img1, rvw_img2, rvw_img3, md_name, store_name, mdimg_thumbnail, order_select_qty, pay_price, order.user_id, order.user_name FROM md join review on review.md_id = md.md_id join store on store.store_id = review.store_id join md_Img on md_Img.md_id = review.md_id join ggdjang.order on ggdjang.order.order_id = review.order_id join payment on payment.md_id = review.md_id WHERE md.md_id = ${md_id}`
     );
 
     resultCode = 200;
