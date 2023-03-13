@@ -50,7 +50,7 @@ router.post("/", async (req, res, next) => {
       data: {
         title: m_title,
         body: m_content,
-        user_id: user_id,
+        userId: user_id,
       },
         token: target_token
       }
