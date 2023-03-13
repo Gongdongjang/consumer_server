@@ -50,6 +50,7 @@ router.post("/", async (req, res, next) => {
       data: {
         title: m_title,
         body: m_content,
+        user_id: user_id,
       },
         token: target_token
       }
@@ -82,8 +83,6 @@ router.post("/", async (req, res, next) => {
     [result]= await pool.execute(`INSERT INTO notification (notification_title, notification_content, notification_type, notification_target,
       notification_push_type, notification_date) VALUES (?, ?, ?, ?, ?, ?)`, [m_title, m_content, "결제알림", "개인", "실시간", order_date]);
     
-    console.log(result.insertId);
-
     await pool.execute(`INSERT INTO notification_by_user (notification_user, notification_id, status) VALUES (?, ?, ?)`,
       [userno, result.insertId, 'SENT']);
 
