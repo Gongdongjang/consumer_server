@@ -2,7 +2,6 @@ const pool = require("../db");
 const express = require("express");
 const firebase = require('firebase-admin');
 const firebaseCredential = require("../gdjang_firebase.json");
-const scheduler = require('node-schedule');
 const router = express.Router();
 
 firebase.initializeApp({
