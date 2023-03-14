@@ -7,6 +7,7 @@ router.post("/", async (req, res, next) => {
 
   let resultCode = 404;
   let message = "에러가 발생했습니다.";
+  let first_time = "yes";
 
   try {
     const u_data = await pool.query(
@@ -17,8 +18,13 @@ router.post("/", async (req, res, next) => {
 
     //문제 없으면 try문 실행
     const [address_result] = await pool.execute(
-      `SELECT loc0, loc1, loc2, loc3 FROM address_user WHERE userno=${userno}`
+      `SELECT loc0, loc1, loc2, loc3, standard_address FROM address_user WHERE userno=${userno}`
     );
+
+    //console.log(address_result);
+    if(address_result[0]==undefined)//처음 회원가입
+      first_time="yes" 
+    else first_time="no"
 
     let address_count = 3;
 
@@ -40,6 +46,7 @@ router.post("/", async (req, res, next) => {
       message: message,
       address_result: address_result,
       address_count: address_count,
+      first_time: first_time
     });
   } catch (err) {
     console.error(err);

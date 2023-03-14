@@ -20,6 +20,9 @@ const orderDetailMdRouter = require("./routes/orderDetailMd");
 const cartListRouter = require("./routes/cartList");
 const mypageRouter = require("./routes/mypage");
 const noticeRouter = require("./routes/notice");
+const reviewRegisterRouter = require("./routes/reviewRegister");
+const reviewListRouter = require("./routes/reviewList");
+const changeRouter = require("./routes/changeUserInfo");
 
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
@@ -37,7 +40,9 @@ app.get("/post_search", (req, res) => {
 
 app.use("/signup", signupRouter);
 app.use("/register_address", addressRouter);
+app.use("/edit_address", require("./routes/edit_address.js"));
 app.use("/get_address", require("./routes/get_address.js"));
+app.use("/delete_address", require("./routes/delete_address.js"));
 app.use("/standard_address", require("./routes/standard_address.js"));
 
 app.post("/kakaoLogin", kakaoLoginRouter);
@@ -72,6 +77,11 @@ app.post("/keeplist", keeplistRouter);
 
 app.get("/mypage", mypageRouter);
 
+app.get("/is_id_exist", changeRouter);
+app.get("/change_pw", changeRouter);
+app.get("/change_name", changeRouter);
+app.get("/change_phone", changeRouter);
+
 app.get("/notice", noticeRouter);
 
 app.use("/payUserInfo", require("./routes/payUserInfo.js"));
@@ -84,6 +94,9 @@ app.use("/notification_pudate", require("./routes/notification_pudate.js"));
 //알람
 app.use("/alarm_token", require("./routes/alarm_token.js"));
 
+//리뷰
+app.use("/review", reviewRegisterRouter);
+app.use("/reviewList", reviewListRouter);
 
 app.use(auth_middleware);
 
