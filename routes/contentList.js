@@ -7,7 +7,7 @@ const fs = require("fs");
 router.get("/", async (req, res) => {
   let return_content;
   // 소비자용
-  const [contents, fields] = await db.execute(
+  const [contents, fields] = await pool.execute(
     `SELECT * FROM content WHERE is_tmp = 0 AND upload_date < CURRENT_DATE() ORDER BY content_date DESC`
   );
   return_content = contents;
@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 
 router.get("/banner", async (req, res) => {
   try {
-    const [result, field] = await db.execute(
+    const [result, field] = await pool.execute(
       `SELECT * FROM content WHERE promotion_banner IS NOT NULL ORDER BY promotion_banner ASC`
     );
 
