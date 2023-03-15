@@ -58,4 +58,32 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+router.post("/delete", async (req, res, next) => {
+  let resultCode = 404;
+  let message = "에러가 발생했습니다.";
+  const user_id = req.body.user_id;
+  const order_id = req.body.order_id;
+
+  try {
+    const [user_no] = await pool.execute(
+      `SELECT user_no FROM user WHERE user_id = ${user_id}`
+    );
+
+    const [review_data] = await pool.execute(
+      `UPDATE review SET rvw_isDelete = 1 WHERE user_no = ${user_no[0].user_no} and review.order_id = ${order_id}`
+    );
+
+    resultCode = 200;
+    message = "리뷰 삭제 성공";
+
+    return res.json({
+      code: resultCode,
+      message: message,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(err);
+  }
+});
+
 module.exports = router;
