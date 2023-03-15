@@ -37,7 +37,8 @@ router.post("/keeplist", async (req, res, next) => {
     for (let i = 0; i < count; i++) {
       // pay_schedule[i] = new Date(keep_list_result[i].pay_schedule).toLocaleDateString();
       pu_start[i] = new Date(keep_list_result[i].pu_start).toLocaleDateString();
-      let distance = new Date(keep_list_result[i].md_end.getTime() - now.getTime());
+      let distance =
+        new Date(keep_list_result[i].md_end).getTime() - now.getTime();
       dDay[i] = Math.floor(distance / (1000 * 60 * 60 * 24));
       //   pu_end[i] = new Date(keep_list_result[i].pu_end).toLocaleDateString();
     }
