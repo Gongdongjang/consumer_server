@@ -4,7 +4,7 @@ let bodyParser = require("body-parser");
 const loginRouter = require("./routes/login.js");
 const signupRouter = require("./routes/signup.js");
 const googleLoginRouter = require("./routes/googleLogin.js");
-const agreePopupRouter = require("./routes/agreePopup.js");
+
 const farmViewRouter = require("./routes/farmView.js");
 const storeViewRouter = require("./routes/storeView.js");
 const mdViewMainRouter = require("./routes/mdView_main.js");
@@ -23,6 +23,7 @@ const noticeRouter = require("./routes/notice");
 const reviewRegisterRouter = require("./routes/reviewRegister");
 const reviewListRouter = require("./routes/reviewList");
 const changeRouter = require("./routes/changeUserInfo");
+const contentListRouter = require("./routes/contentList");
 
 const auth_middleware = require("./routes/auth_middleware");
 // const refreshRouter = require("./routes/")
@@ -50,8 +51,6 @@ app.post("/googleLogin", googleLoginRouter);
 
 app.post("/login", loginRouter);
 app.get("/logout", logoutRouter);
-
-app.post("/agreePopup", agreePopupRouter);
 
 app.use("/orderDetailView", orderDetailRouter);
 app.use("/orderDetailMd", orderDetailMdRouter);
@@ -97,6 +96,9 @@ app.use("/alarm_token", require("./routes/alarm_token.js"));
 //리뷰
 app.use("/review", reviewRegisterRouter);
 app.use("/reviewList", reviewListRouter);
+
+//콘텐츠
+app.use("/content", contentListRouter);
 
 app.use(auth_middleware);
 
