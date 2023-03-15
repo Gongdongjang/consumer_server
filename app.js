@@ -76,7 +76,7 @@ app.post("/keeplist", keeplistRouter);
 
 app.get("/mypage", mypageRouter);
 
-app.get("/is_id_exist", changeRouter);
+app.get("/check_id", changeRouter);
 app.get("/change_pw", changeRouter);
 app.get("/change_name", changeRouter);
 app.get("/change_phone", changeRouter);
