@@ -2,6 +2,33 @@ const pool = require("../db");
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const { async } = require("@firebase/util");
+
+// 소셜 확인
+router.get("/check_id", async (req, res, next) => {
+    let user_id = req.query.user_id;
+    try {
+        const [check_id] = await pool.execute(
+            `SELECT sns_type FROM user WHERE user_id = ?`,
+            [user_id]
+        );
+        if (check_id[0].sns_type == null){
+            message = "not_sns"
+        }
+        else {
+            message = "sns"
+        }
+
+        return res.json({
+        code: resultCode,
+        message: message,
+        check_id: check_id,
+        }); 
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json(err);
+    }
+});
 
 // 비밀번호 변경
 router.get("/change_pw", async (req, res, next) => {
@@ -10,7 +37,6 @@ router.get("/change_pw", async (req, res, next) => {
     let passwordBy = bcrypt.hashSync(password, 10); // sync
     try {
         const [change_pw] = await pool.execute(
-            
             `UPDATE user SET password = ? where user_id = ?`,
             [passwordBy, user_id]
         );
