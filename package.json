@@ -2,7 +2,7 @@
   "name": "consumer_server",
   "version": "1.0.0",
   "description": "소비자용 서버",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,6 +17,18 @@
   },
   "homepage": "https://github.com/Gongdongjang/consumer_server#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "aws-sdk": "^2.1295.0",
+    "axios": "^0.27.2",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.2",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.17.3",
+    "express-asyncify": "^1.0.1",
+    "firebase-admin": "^11.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "node-schedule": "^2.1.1"
   }
 }

@@ -1,2 +1,5 @@
 node_modules
 package-lock.json
+db.js
+.env
+gdjang_firebase.json
