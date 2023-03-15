@@ -33,7 +33,7 @@ router.post("/farmDetail", async (req, res, next) => {
       pu_start[i] = new Date(md_data[i].pu_start).toLocaleDateString();
       pu_end[i] = new Date(md_data[i].pu_end).toLocaleDateString();
 
-      let distance = md_data[i].md_end.getTime() - now.getTime();
+      let distance = new Date(md_data[i].md_end.getTime() - now.getTime());
       dDay[i] = Math.floor(distance / (1000 * 60 * 60 * 24));
     }
 
