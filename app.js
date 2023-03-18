@@ -40,6 +40,7 @@ app.get("/post_search", (req, res) => {
 });
 
 app.use("/signup", signupRouter);
+app.get("/is_id_dup", signupRouter);
 app.use("/register_address", addressRouter);
 app.use("/edit_address", require("./routes/edit_address.js"));
 app.use("/get_address", require("./routes/get_address.js"));
