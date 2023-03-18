@@ -103,4 +103,31 @@ router.post("/phone-check/verify", async (req, res) => {
   }
 });
 
+router.get("/is_id_dup", async (req, res) => {
+  let id = req.query.id;
+  try {
+    const [is_id_dup] = await pool.execute(
+      `SELECT EXISTS (SELECT user_no FROM ggdjang.user WHERE user_id = ?) as no;`,
+      [id]
+    );
+    
+    if (is_id_dup[0].no){   // dup이면 1
+      resultCode = 200;
+      message = "id_dup";
+    } else {
+      resultCode = 200;
+      message = "id_not_dup";
+    }
+
+    return res.json({
+      code: resultCode,
+      message: message,
+      id: id,
+    });
+  } catch (err){
+    console.error(err);
+    res.status(500).send({msg: "server error"});
+  }
+});
+
 module.exports = router;
