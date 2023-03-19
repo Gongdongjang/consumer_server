@@ -11,7 +11,7 @@ router.post("/", async (req, res, next) => {
 
   try {
     const [contentDetail] = await pool.query(
-      "select mdimg_thumbnail, md.md_id, md_name, store_name, store_loc, md_end, pay_price from md join payment on md.md_id=payment.md_id join pickup on md.md_id = pickup.md_id join store on pickup.store_id=store.store_id join md_Img on md.md_id=md_Img.md_id where md.md_id = ? or md.md_id = ?",
+      "select mdimg_thumbnail, md.md_id, md_name, store_name, store_loc, md_end, pay_price from md join payment on md.md_id=payment.md_id join pickup on md.md_id = pickup.md_id join store on pickup.store_id=store.store_id join md_Img on md.md_id=md_Img.md_id where md.md_id = ? or md.md_id = ? and md_result is null or md_result=1",
       [content_md_id1, content_md_id2]
     );
 
