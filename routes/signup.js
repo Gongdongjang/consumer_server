@@ -88,7 +88,7 @@ router.post("/phone-check/verify", async (req, res) => {
       [phone_number]
     );
     const expire_time = new Date(result[0].expire).setHours(
-      result[0].expire.getHours() + 9
+      new Date(result[0].expire).getHours() + 9
     );
     const now = Date.now();
 
@@ -110,8 +110,9 @@ router.get("/is_id_dup", async (req, res) => {
       `SELECT EXISTS (SELECT user_no FROM ggdjang.user WHERE user_id = ?) as no;`,
       [id]
     );
-    
-    if (is_id_dup[0].no){   // dup이면 1
+
+    if (is_id_dup[0].no) {
+      // dup이면 1
       resultCode = 200;
       message = "id_dup";
     } else {
@@ -124,7 +125,7 @@ router.get("/is_id_dup", async (req, res) => {
       message: message,
       id: id,
     });
-  } catch (err){
+  } catch (err) {
     console.error(err);
     res.status(500).send({msg: "server error"});
   }

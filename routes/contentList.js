@@ -11,7 +11,6 @@ router.get("/", async (req, res) => {
     `SELECT * FROM content WHERE is_tmp = 0 AND upload_date < CURRENT_DATE() ORDER BY content_date DESC`
   );
   return_content = contents;
-
   res.send(return_content);
 });
 
