@@ -39,7 +39,7 @@ router.post("/", async (req, res, next) => {
       }else{
           const data = await pool.query(sql1, [userno]);
           message = "주소삭제완료";
-          if(address[0].loc2 !=null && address[0].loc !=null ){ //주소2,3 있으면 주소1,2로 옮기기
+          if(address[0].loc2 !=null || address[0].loc !=null ){ //주소2,3 있으면 주소1,2로 옮기기
               const move = await pool.query(`UPDATE address_user SET loc1=?, loc2=?, loc3=null WHERE userno = ?`, [address[0].loc2, address[0].loc3, userno]);
           } else {
               const move = await pool.query(`UPDATE address_user SET loc1=?, loc2=null WHERE userno = ?`, [address[0].loc2, userno]);
