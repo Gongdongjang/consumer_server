@@ -30,7 +30,7 @@ router.post("/", async (req, res, next) => {
 
 
     let m_title= md_name+ " 무통장 입금 안내";
-    let m_content="안녕하세요. "+user_name+"님. 무통장 입금 계좌 안내드립니다. 은행 : 신한은행 계좌번호 : 0000-000-000000 예금주 : 김민서 금액 : "+ order_price+"원 입금 확인 시간은 매일 11-15시/18-22시 진행됩니다. 문의사항은 [마이페이지 > 고객센터 > 문의하기]를 사용해주세요.";
+    let m_content="안녕하세요. "+user_name+"님. 무통장 입금 계좌 안내드립니다. 은행 : 우리은행 계좌번호 : 1002-363-127161 예금주 : 김민서 금액 : "+ order_price+"원 입금 확인 시간은 매일 11-15시/18-22시 진행됩니다. 문의사항은 [마이페이지 > 고객센터 > 문의하기]를 사용해주세요.";
 
     //order테이블에 값 insert
     const [order_insert] = await pool.execute(
