@@ -4,12 +4,17 @@ const router = express.Router();
 
 router.post("/", async (req, res, next) => {
 
+  //console.log(req.body);
   const userid=req.body.id;
   const addresslist=req.body.address.substring(1, req.body.address.length - 1); // [ ] 제거
   const first_time=req.body.first_time;
   let currentAddr=req.body.currentAddr;
-  currentAddr=currentAddr.substring(0,currentAddr.length - 1); // [ ] 제거
-  //console.log(currentAddr);
+
+  if(currentAddr=="현재위치"){
+    currentAddr="서울특별시 성북구 돈암동 보문로34다길 2";
+  }else{
+    currentAddr=currentAddr.substring(0,currentAddr.length - 1); // [ ] 제거
+  }
 
   let address=addresslist.split(', ')
   let count=address.length;
@@ -45,7 +50,6 @@ router.post("/", async (req, res, next) => {
     
       //최초 로그인 했을 시 first_login 값 1로 바꿔주기
       const first_time = await pool.query(`UPDATE user SET first_login = 1 WHERE user_no = ?`, [userno]);
-
     }
 
     let sql;
