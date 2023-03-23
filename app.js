@@ -103,6 +103,6 @@ app.use("/content", contentListRouter);
 app.use("/contentDetail", require("./routes/contentDetail"));
 app.use(auth_middleware);
 
-app.listen(3000, function () {
+app.listen(3030, function () {
   console.log("server is running.");
 });
