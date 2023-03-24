@@ -29,7 +29,7 @@ router.post("/storeDetail", async (req, res, next) => {
 
     //스토어에 있는 제품리뷰
     const [review_result] = await pool.execute(
-      `SELECT rvw_rating, rvw_content, md.md_id, md.md_name FROM review join md on review.md_id=md.md_id WHERE store_id=${store_id}`
+      `SELECT rvw_rating, rvw_content, md.md_id, md.md_name FROM review join md on review.md_id=md.md_id WHERE (store_id=${store_id}) and (md_result is null or md_result=1)`
     );
 
     //스토어 현재 진행중인 공동구매
