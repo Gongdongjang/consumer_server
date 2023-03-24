@@ -12,7 +12,7 @@ router.get("/farmView", async (req, res, next) => {
     const [result] = await pool.execute(`SELECT * FROM farm`);
 
     const [md_result] = await pool.execute(
-      `SELECT * FROM md LEFT JOIN farm ON md.farm_id = farm.farm_id`
+      `SELECT * FROM md LEFT JOIN farm ON md.farm_id = farm.farm_id WHERE (md_result is null or md_result=1)`
     );
 
     return res.json({
@@ -22,7 +22,6 @@ router.get("/farmView", async (req, res, next) => {
       result: result,
       //상세 페이지 관련 정보
       md_result: md_result,
-
     });
   } catch (err) {
     console.error(err);

@@ -9,7 +9,7 @@ router.get("/storeView", async (req, res, next) => {
   try {
     //문제 없으면 try문 실행
     const [store_result] = await pool.execute(
-      `SELECT * FROM store join pickup on store.store_id = pickup.store_id join md on pickup.md_id = md.md_id join payment on md.md_id = payment.md_id`
+      `SELECT * FROM store join pickup on store.store_id = pickup.store_id join md on pickup.md_id = md.md_id join payment on md.md_id = payment.md_id where (md_result is null or md_result=1)`
     );
 
     let count = store_result.length;
