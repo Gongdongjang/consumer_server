@@ -67,7 +67,7 @@ router.post('/push', async (req, res) => {
         userno = u_data[0][0].user_no;
         user_name=u_data[0][0].user_name;
 
-        [pu_info] = await pool.execute(`SELECT md_name, order_pu_date FROM md JOIN ggdjang.order ON md.md_id = ggdjang.order.md_id WHERE ggdjang.order.user_id=${user_id}`);
+        [pu_info] = await pool.execute(`SELECT md_name, order_pu_date FROM md JOIN ggdjang.order ON md.md_id = ggdjang.order.md_id WHERE ggdjang.order.user_id=?`, [user_id]);
         count=pu_info.length;
     } catch(error) {
         console.log(error);

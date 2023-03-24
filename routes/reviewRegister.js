@@ -19,7 +19,7 @@ router.post("/", async (req, res, next) => {
     );
 
     const [user_no] = await pool.execute(
-      `SELECT user_no FROM user WHERE user_id = ${user_id}`
+      `SELECT user_no FROM user WHERE user_id = ?`, [user_id]
     );
 
     const order_date = new Date();
@@ -66,7 +66,7 @@ router.post("/delete", async (req, res, next) => {
 
   try {
     const [user_no] = await pool.execute(
-      `SELECT user_no FROM user WHERE user_id = ${user_id}`
+      `SELECT user_no FROM user WHERE user_id = ?`, [user_id]
     );
 
     const [review_data] = await pool.execute(

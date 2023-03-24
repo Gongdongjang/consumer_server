@@ -9,7 +9,7 @@ router.post("/", async (req, res, next) => {
 
   try {
     const [user_no] = await pool.execute(
-      `SELECT user_no FROM user WHERE user_id = ${user_id}`
+      `SELECT user_no FROM user WHERE user_id = ?`, [user_id]
     );
 
     //img 미리 한 번 보내고 detail에서 사용할 수 있도록 + isDelete가 0인 경우에만 보이게 수정
