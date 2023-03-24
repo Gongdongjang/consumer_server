@@ -37,10 +37,10 @@ router.post("/", async (req, res, next) => {
     if (address_result[0].loc1 == null) {
       address_count--; //address_count==0
     }
-
+    console.log(address_count);
     resultCode = 200;
     message = "주소정보 얻기 성공";
-
+    
     return res.json({
       code: resultCode,
       message: message,
