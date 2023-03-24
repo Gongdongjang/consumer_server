@@ -10,7 +10,7 @@ router.post("/", async (req, res, next) => {
   try {
     //문제 없으면 try문 실행
     const [order_detail] = await pool.execute(
-      `SELECT * FROM ggdjang.order join md_Img on md_Img.md_id = order.md_id WHERE order.order_cancel = 0 and order_id = ${order_id}`
+      `SELECT * FROM ggdjang.order join md_Img on md_Img.md_id = order.md_id WHERE order.order_cancel = 0 and order_id = ?`, [order_id]
     );
 
     //상품 현재 상태
