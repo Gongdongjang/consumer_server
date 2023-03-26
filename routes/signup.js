@@ -67,7 +67,7 @@ router.post("/phone-check", async (req, res) => {
   try {
     const sms_res = await axios.post(sms_url, {
       "type":"SMS",
-      "from":"01087081425",
+      "from":"",
       "countryCode": "82",
       "content":`공동장 인증번호는 [${code}]입니다.`,
       "messages":[
