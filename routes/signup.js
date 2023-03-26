@@ -57,19 +57,40 @@ function makeSignature(time) {
 router.post("/phone-check", async (req, res) => {
   const body = req.body;
   const phone_number = body.phone_number;
+  console.log(body);
 
   const sms_url = `https://sens.apigw.ntruss.com/sms/v2/services/${process.env.naver_id}/messages`;
   const time_stamp = Date.now().toString();
   const signature = makeSignature(time_stamp);
-  let code = "";
+  let code = '';
   for (let i = 0; i < 6; i++) code += Math.floor(Math.random() * 10);
   try {
+    const sms_res = await axios.post(sms_url, {
+      "type":"SMS",
+      "from":"01099263238",
+      "countryCode": "82",
+      "content":`공동장 인증번호는 [${code}]입니다.`,
+      "messages":[
+          {
+              "to": phone_number,
+              "content":`공동장 인증번호는 [${code}]입니다.`
+          }
+      ]
+  }, {
+      headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'x-ncp-apigw-timestamp': time_stamp,
+          'x-ncp-iam-access-key': process.env.naver_access,
+          'x-ncp-apigw-signature-v2': signature
+      }
+  }
+)
     const [result] = await pool.execute(
       `INSERT INTO sms_validation(phone_number, code, expire) VALUES (?, ?, NOW() + INTERVAL 3 MINUTE) ON DUPLICATE KEY UPDATE code = ?, expire = NOW() + INTERVAL 3 MINUTE`,
       [phone_number, code, code]
     );
     res.send({msg: "success"});
-  } catch (e) {
+  } catch (err) {
     console.error(err);
     res.status(500).send({msg: "server error"});
   }
@@ -81,6 +102,7 @@ router.post("/phone-check/verify", async (req, res) => {
   const phone_number = body.phone_number;
 
   let phone_valid = false;
+  console.log(code);
 
   try {
     const [result, field] = await pool.execute(
