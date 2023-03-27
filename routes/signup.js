@@ -57,11 +57,12 @@ function makeSignature(time) {
 router.post("/phone-check", async (req, res) => {
   const body = req.body;
   const phone_number = body.phone_number;
+  console.log(body);
 
   const sms_url = `https://sens.apigw.ntruss.com/sms/v2/services/${process.env.naver_id}/messages`;
   const time_stamp = Date.now().toString();
   const signature = makeSignature(time_stamp);
-  let code = "";
+  let code = '';
   for (let i = 0; i < 6; i++) code += Math.floor(Math.random() * 10);
   try {
     const sms_res = await axios.post(
@@ -104,6 +105,7 @@ router.post("/phone-check/verify", async (req, res) => {
   const phone_number = body.phone_number;
 
   let phone_valid = false;
+  console.log(code);
 
   try {
     const [result, field] = await pool.execute(
