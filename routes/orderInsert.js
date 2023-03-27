@@ -33,14 +33,17 @@ router.post("/", async (req, res, next) => {
     let m_content="안녕하세요. "+user_name+"님. 무통장 입금 계좌 안내드립니다. 은행 : 우리은행 계좌번호 : 1002-363-127161 예금주 : 김민서 금액 : "+ order_price+"원 입금 확인 시간은 매일 11-15시/18-22시 진행됩니다. 문의사항은 [마이페이지 > 고객센터 > 문의하기]를 사용해주세요.";
 
     //order테이블에 값 insert
-    const [order_insert] = await pool.execute(
+    [order_insert] = await pool.execute(
       `INSERT INTO ggdjang.order (order_select_qty, order_pu_date, order_date, order_md_status, order_pu_time, order_price, user_id, md_id, store_id, user_name, order_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
       [select_qty,order_pu_date,order_date,"준비중",order_pu_time,order_price,user_id,md_id,store_id,user_name,order_name]
     );
+   // console.log("orderInsertID");
+   // console.log(order_insert.insertId);
     resultCode = 200;
     message = "orderInsert 성공";
 
-  
+    //console.log(user_id);
+
     //결제성공 알림 보내기
     let msg = {
       notification: {                
@@ -72,10 +75,10 @@ router.post("/", async (req, res, next) => {
 
     //장바구니 리스트 삭제하기
     const cart_delete= await pool.execute(`DELETE FROM cart WHERE user_id = ? and store_id = ? and md_id= ?`, [user_id, store_id, md_id]);
-    console.log(cart_delete);
+    //console.log(cart_delete);
 
     //order_id 보내기
-    const [order_id] = await pool.execute(
+    [order_id] = await pool.execute(
       `SELECT LAST_INSERT_ID() FROM ggdjang.order WHERE user_id = ?`, [user_id]
     );
 
@@ -90,7 +93,7 @@ router.post("/", async (req, res, next) => {
     return res.json({
       code: resultCode,
       message: message,
-      order_id: order_id[0]
+      order_id: order_insert.insertId
     });
   } catch (err) {
     console.error(err);
