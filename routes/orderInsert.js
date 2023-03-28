@@ -29,6 +29,9 @@ router.post("/", async (req, res, next) => {
     target_token=u_data[0][0].fcm_token;
 
 
+    console.log("@@@@@ u_data");
+    console.log(u_data);
+
     let m_title= md_name+ " 무통장 입금 안내";
     let m_content="안녕하세요. "+user_name+"님. 무통장 입금 계좌 안내드립니다. 은행 : 우리은행 계좌번호 : 1002-363-127161 예금주 : 김민서 금액 : "+ order_price+"원 입금 확인 시간은 매일 11-15시/18-22시 진행됩니다. 문의사항은 [마이페이지 > 고객센터 > 문의하기]를 사용해주세요.";
 
@@ -37,12 +40,25 @@ router.post("/", async (req, res, next) => {
       `INSERT INTO ggdjang.order (order_select_qty, order_pu_date, order_date, order_md_status, order_pu_time, order_price, user_id, md_id, store_id, user_name, order_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
       [select_qty,order_pu_date,order_date,"준비중",order_pu_time,order_price,user_id,md_id,store_id,user_name,order_name]
     );
-   // console.log("orderInsertID");
-   // console.log(order_insert.insertId);
+
+
+
+    console.log("@@@@@ order_insert");
+    console.log(order_insert);
+
+   console.log("orderInsertID");
+   console.log(order_insert.insertId);
+
+   const order_Id= order_insert.insertId;
+   console.log("const로 준 orderInsertID");
+   console.log(order_Id);
+
+
     resultCode = 200;
     message = "orderInsert 성공";
 
-    //console.log(user_id);
+    console.log("@@@@@ user_id");
+    console.log(user_id);
 
     //결제성공 알림 보내기
     let msg = {
@@ -57,18 +73,24 @@ router.post("/", async (req, res, next) => {
       },
         token: target_token
       }
-  
+
+      console.log("@@@@ 알림 msg");
+      console.log(msg);
+    
       firebase
       .messaging()
       .send(msg)
       .then(function (response) {
+        console.log("Firebase:", response);
       })
       .catch(function (err) {
+        console.log("Firebase:", err);
       });
 
 
     //결제 성공 후 재고 줄여주기
     const stock_remain= await pool.execute(`UPDATE stock SET stk_remain=stk_remain-${select_qty} WHERE md_id=${md_id}`);
+  
     //총 주문수량 늘려주기
     const stock_total= await pool.execute(`UPDATE stock SET stk_total=stk_total+${select_qty} WHERE md_id=${md_id}`);
     // stk_total = select sum(order_select_qty) from `order` join md on md.md_id = `order`.md_id where md.md_id = 5;
@@ -78,17 +100,27 @@ router.post("/", async (req, res, next) => {
     //console.log(cart_delete);
 
     //order_id 보내기
-    [order_id] = await pool.execute(
-      `SELECT LAST_INSERT_ID() FROM ggdjang.order WHERE user_id = ?`, [user_id]
-    );
+    // [order_id] = await pool.execute(
+    //   `SELECT LAST_INSERT_ID() FROM ggdjang.order WHERE user_id = ?`, [user_id]
+    // );
+
+    console.log("@@@@ order_id 내보내기");
+    console.log(msg);
 
     //알림테이블에 추가
     let result;
     [result]= await pool.execute(`INSERT INTO notification (notification_title, notification_content, notification_type, notification_target,
       notification_push_type, notification_date) VALUES (?, ?, ?, ?, ?, ?)`, [m_title, m_content, "결제알림", "개인", "실시간", order_date]);
     
-    await pool.execute(`INSERT INTO notification_by_user (notification_user, notification_id, status) VALUES (?, ?, ?)`,
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@ == 알림 ");
+    console.log("notification 테이블 sql");
+    console.log(result);
+
+    [notifi] = await pool.execute(`INSERT INTO notification_by_user (notification_user, notification_id, status) VALUES (?, ?, ?)`,
       [userno, result.insertId, 'SENT']);
+
+    console.log("notification_by_user 테이블 sql");  
+    console.log(notifi);
 
     return res.json({
       code: resultCode,
