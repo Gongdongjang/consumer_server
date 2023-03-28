@@ -15,7 +15,7 @@ router.post("/", async (req, res, next) => {
     const [stock_info] = await pool.execute(`SELECT order_select_qty, md_id FROM ggdjang.order WHERE order_id = ${order_id}`);
 
     //주문취소
-    const order_cancel= await pool.execute(`UPDATE order SET order_cancel = 1 WHERE order_id = ${order_id}`);
+    const order_cancel= await pool.execute(`UPDATE ggdjang.order SET order_cancel = 1 WHERE order_id = ${order_id}`);
     resultCode = 200;
     message = "orderCancel 성공";
 
