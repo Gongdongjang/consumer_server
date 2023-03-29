@@ -4,13 +4,10 @@ const firebase = require('firebase-admin');
 const firebaseCredential = require("../gdjang_firebase.json");
 const router = express.Router();
 
-
 router.post("/", async (req, res, next) => {
   let resultCode = 404;
   let message = "에러가 발생했습니다.";
 
-  // console.log("########주문하기 orderinsert.js");
-  // console.log(req.body);
 
   let {user_id, md_id, store_id, select_qty, order_price, pu_date, pu_time, order_name, md_name} = req.body;
   let isOrderSucess=null;
@@ -32,24 +29,15 @@ router.post("/", async (req, res, next) => {
     user_name = u_data[0][0].user_name;
     target_token=u_data[0][0].fcm_token;
 
-
-    // console.log("@@@@@ u_data");
-    // console.log(u_data);
-
     let m_title= md_name+ " 무통장 입금 안내";
     let m_content="안녕하세요. "+user_name+"님. 무통장 입금 계좌 안내드립니다. 은행 : 우리은행 계좌번호 : 1002-363-127161 예금주 : 김민서 금액 : "+ order_price+"원 입금 확인 시간은 매일 11-15시/18-22시 진행됩니다. 문의사항은 [마이페이지 > 고객센터 > 문의하기]를 사용해주세요.";
 
-    //order테이블에 값 insert
     try{
       [order_insert] = await pool.execute(
-        `INSERT INTO ggdjang.order (order_select_qty, order_pu_date, order_date, order_md_status, order_pu_time, order_price, user_id, md_id, store_id, user_name, order_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
-        [select_qty,order_pu_date,order_date,"준비중",order_pu_time,order_price,user_id,md_id,store_id,user_name,order_name]
+        `INSERT INTO ggdjang.order (order_select_qty, order_pu_date, order_date, order_pu_time, order_price, user_id, md_id, store_id, user_name, order_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+        [select_qty,order_pu_date,order_date, order_pu_time, order_price,user_id,md_id,store_id,user_name,order_name]
       );
 
-      //const order_Id= order_insert.insertId;
-      //console.log("const로 준 orderInsertID");
-      //console.log(order_Id);
-  
        resultCode = 200;
        message = "orderInsert success";
        isOrderSucess=order_insert.insertId;
@@ -58,9 +46,6 @@ router.post("/", async (req, res, next) => {
     catch(err) {
       console.log(err);
     }
-
-    // console.log("@@@@@ user_id");
-    // console.log(user_id);
 
     if(resultCode==200) {
     //결제성공 알림 보내기
@@ -77,9 +62,6 @@ router.post("/", async (req, res, next) => {
           token: target_token
         }
 
-        // console.log("@@@@ 알림 msg");
-        // console.log(msg);
-      
         firebase
         .messaging()
         .send(msg)
@@ -100,25 +82,16 @@ router.post("/", async (req, res, next) => {
 
       //장바구니 리스트 삭제하기
       const cart_delete= await pool.execute(`DELETE FROM cart WHERE user_id = ? and store_id = ? and md_id= ?`, [user_id, store_id, md_id]);
-      //console.log(cart_delete);
-
-      // console.log("@@@@ order_id 내보내기");
-      // console.log(msg);
 
       //알림테이블에 추가
       let result;
       [result]= await pool.execute(`INSERT INTO notification (notification_title, notification_content, notification_type, notification_target,
         notification_push_type, notification_date) VALUES (?, ?, ?, ?, ?, ?)`, [m_title, m_content, "결제알림", "개인", "실시간", order_date]);
       
-      // console.log("@@@@@@@@@@@@@@@@@@@@@@@ == 알림 ");
-      // console.log("notification 테이블 sql");
-      // console.log(result);
 
       [notifi] = await pool.execute(`INSERT INTO notification_by_user (notification_user, notification_id, status) VALUES (?, ?, ?)`,
         [userno, result.insertId, 'SENT']);
 
-      // console.log("notification_by_user 테이블 sql");  
-      // console.log(notifi);
     }
     
 
